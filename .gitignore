@@ -1,0 +1,9 @@
+# Large/local runtime directories (not committed)
+/input_videos/
+/jobs/
+/_python37/
+/_python311/
+/_setup_cache/
+
+# Python bytecode caches (including nested packages)
+__pycache__/

@@ -1,0 +1,20 @@
+# Minimal legacy inference dependencies for Python 3.7 x64 on Windows.
+# Purpose: run live_inference_AI_ready.py with existing VGGish + Keras .h5 model.
+# Do NOT install the project's original requirements.txt into this venv.
+# TensorFlow 1.15 API; CPU build avoids legacy NVIDIA CUDA/cuDNN requirements.
+numpy==1.19.5
+scipy==1.5.4
+tensorflow-cpu==1.15.0
+tensorflow-estimator==1.15.1
+tensorboard==1.15.0
+Keras==2.2.4
+Keras-Applications==1.0.8
+Keras-Preprocessing==1.1.2
+h5py==2.10.0
+protobuf==3.19.6
+resampy==0.2.2
+numba==0.53.1
+llvmlite==0.36.0
+librosa==0.8.1
+SoundFile==0.12.1
+tf-slim==1.1.0

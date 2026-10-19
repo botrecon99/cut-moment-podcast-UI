@@ -1,0 +1,11 @@
+{
+    "poll_seconds":  3,
+    "yt_dlp":  "yt-dlp",
+    "keep_raw_after_cut":  true,
+    "auto_download_links":  true,
+    "ffprobe":  "tools/ffmpeg/bin/ffprobe.exe",
+    "detector_project_dir":  "",
+    "detector_python":  "",
+    "auto_import_mp4":  true,
+    "ffmpeg":  "tools/ffmpeg/bin/ffmpeg.exe"
+}

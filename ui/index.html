@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Parallel Laugh Studio V3.7.4 — Merge titles & safe export</title>
+<style>
+:root{--bg:#0a0e17;--surface:#121925;--surface2:#182232;--border:#2b3648;--muted:#95a4bb;--text:#e9eef7;--accent:#60a5fa;--green:#4ade80;--yellow:#fbbf24;--red:#fb7185}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;height:100%}
+button,input,textarea{font:inherit}button{color:inherit;cursor:pointer;border:1px solid var(--border);background:var(--surface2);border-radius:9px;padding:9px 12px;transition:background .12s,border-color .12s}button:hover{background:#26344a;border-color:#485975}button:disabled{opacity:.4;cursor:not-allowed}button.primary{background:#2563eb;border-color:#3b82f6;color:#fff;font-weight:650}button.primary:hover{background:#1d4ed8}button.green{background:#136e42;border-color:#219c62;color:#eafff2;font-weight:650}button.green:hover{background:#16834e}button.ghost{background:transparent}.muted{color:var(--muted)}.tiny{font-size:11px}.small{font-size:12px}.tag{border:1px solid var(--border);background:#202c3e;border-radius:999px;padding:3px 9px;font-size:11px;white-space:nowrap}.tag.good{color:#89f3af;border-color:#286747;background:#123d2e}.tag.busy{color:#fbd073;border-color:#72552c;background:#45341c}.tag.bad{color:#ff94a5;border-color:#713348;background:#43202e}.tag.wait{color:#aac6ed}.row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.grow{flex:1}.icon{font-size:16px}header{height:63px;border-bottom:1px solid var(--border);background:#101725;display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:12px}.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.3px}.logo{height:34px;width:34px;border-radius:11px;background:linear-gradient(135deg,#2366ec,#18af9a);display:grid;place-items:center;font-size:19px}.brand sub{font-size:10px;color:var(--muted);font-weight:500;letter-spacing:1px;display:block;margin-top:2px}.body{height:calc(100vh - 63px);min-height:630px;display:grid;grid-template-columns:285px minmax(540px,1fr) 306px;gap:0}.sidebar{border-right:1px solid var(--border);overflow:auto;background:#101621;padding:16px 12px}.main{overflow:auto;padding:18px 20px 26px;min-width:0}.right{border-left:1px solid var(--border);overflow:auto;padding:17px 15px;background:#101621}.section-title{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px;font-size:13px;font-weight:720}.job{padding:11px 10px;border:1px solid transparent;border-radius:11px;margin-bottom:7px;cursor:pointer;background:#161e2d}.job:hover{background:#202d40}.job.active{border-color:#4383e8;background:#203452}.jobtitle{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12.5px;font-weight:650}.jobid{font-size:10px;color:var(--muted);margin-top:4px}.jobfooter{display:flex;justify-content:space-between;align-items:center;margin-top:8px}.panel{border:1px solid var(--border);border-radius:13px;background:var(--surface);overflow:hidden;margin-bottom:15px}.panelpadding{padding:14px}.panel-title{font-weight:720;font-size:14px;display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:11px}.file-head{font-size:18px;font-weight:760;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}.panel-kicker{font-size:10px;letter-spacing:1.1px;color:#7d9bd5;font-weight:800;margin-bottom:4px}.video-box{background:#05080e;border:1px solid #263244;border-radius:12px;overflow:hidden;position:relative;display:flex;justify-content:center;align-items:center;min-height:235px;max-height:340px;aspect-ratio:16/9}.video-box video{width:100%;height:100%;max-height:340px;object-fit:contain;background:#04070b}.video-empty{position:absolute;text-align:center;color:#63728b;pointer-events:none}.video-empty div:first-child{font-size:34px}.transport{display:flex;align-items:center;gap:8px;margin-top:12px}.timecode{font-size:12px;font-variant-numeric:tabular-nums;color:#cad6e7;margin-left:auto}.timeline-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:9px}.timeline-instruction{color:#8cabc7;font-size:11px;margin:0 0 5px}.timeline-box{border:1px solid #324158;background:#0c1523;border-radius:10px;padding:9px 12px 8px;user-select:none;touch-action:none}canvas{width:100%;display:block;touch-action:none}#timeline{height:230px;cursor:grab}#overview{height:45px;cursor:pointer}.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#bac7d8}.legend span:before{content:"";width:8px;height:8px;border-radius:2px;display:inline-block;background:var(--accent);margin-right:6px}.legend .approved:before{background:var(--green)}.legend .laugh:before{background:#efb44d}.legend .discard:before{background:#566277}.clip-table{width:100%;border-collapse:collapse}.clip-table th{font-size:11px;color:var(--muted);text-align:left;font-weight:600;padding:9px 8px;border-bottom:1px solid #2f3a4a}.clip-table td{padding:10px 8px;border-bottom:1px solid #273246;font-size:12px}.clip-table tr{cursor:pointer}.clip-table tbody tr:hover{background:#1b2c40}.clip-table tbody tr.selected{background:#193657}.clip-table td:nth-child(1){text-align:center}.clip-table td:nth-child(4){font-variant-numeric:tabular-nums}.clip-table input{accent-color:#27c679;cursor:pointer;width:16px;height:16px}.bulk-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:9px 10px;margin-bottom:10px;background:#111d2e;border:1px solid #31445c;border-radius:10px}.bulk-toolbar label{display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer}.bulk-toolbar input{accent-color:#60a5fa;width:16px;height:16px}.bulk-toolbar button{padding:7px 10px;font-size:12px}.bulk-toolbar .tag{font-size:11px}.clip-title{max-width:310px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}.empty{text-align:center;padding:25px 10px;color:var(--muted);font-size:13px}.statusdot{display:inline-block;border-radius:50%;background:var(--green);width:7px;height:7px;margin-right:7px}.input-label{display:block;font-size:11px;font-weight:700;color:#9cafc7;margin-bottom:5px}input[type=text],textarea{width:100%;background:#0e1725;border:1px solid #364357;border-radius:8px;color:#e5eefa;padding:10px;outline:0}input:focus,textarea:focus{border-color:#4995ff;box-shadow:0 0 0 2px #1b4578}textarea{resize:vertical;min-height:123px;font:12px/1.55 Consolas,Monaco,monospace}.field{margin:0 0 14px}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}.timeinput{font:13px Consolas,monospace !important;padding:9px 8px !important;letter-spacing:-.2px}.stepbtn{padding:5px 8px;font-size:11px;flex:1}.fieldactions{display:flex;gap:5px;margin-top:7px}.divider{border-top:1px solid var(--border);margin:17px -15px;padding:0}.selected-name{font-weight:700;color:#dbe8fb}.hint{background:#17273a;border:1px solid #324561;border-radius:10px;padding:10px 12px;color:#b0c6dc;font-size:12px;line-height:1.7}.ai-area{margin-top:11px}.ai-area summary{cursor:pointer;color:#bdd3f6;font-weight:700}.ai-area textarea{margin-top:10px;height:190px}.quick-actions{display:flex;gap:7px;flex-wrap:wrap}.queue-count{font-size:11px;background:#24344c;color:#bfd8fa;padding:3px 9px;border-radius:999px}.notify{position:fixed;bottom:18px;right:18px;background:#15334b;border:1px solid #3473a0;padding:11px 18px;border-radius:10px;box-shadow:0 10px 40px #0008;max-width:420px;z-index:100;display:none}.notify.error{background:#4d1e2a;border-color:#a24259}.notify.visible{display:block;animation:toastIn .16s ease-out}@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}details>summary{cursor:pointer}.renderbar{position:sticky;bottom:0;background:#152034ee;border:1px solid #35516a;border-radius:12px;padding:12px;backdrop-filter:blur(8px);margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:15px}.noticebar{font-size:11px;color:#94afc3}.kbd{border:1px solid #34455b;padding:1px 5px;border-radius:4px;background:#182536}.progress{color:#ffd180;font-size:12px}a{color:#9cc9ff}
+@media(max-width:1200px){.body{grid-template-columns:230px minmax(440px,1fr)}.right{grid-column:2;border-top:1px solid var(--border);border-left:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:20px}.right>div{min-width:0}}@media(max-width:800px){.body{display:block;height:auto}.sidebar{max-height:300px}.main{padding:12px}.right{display:block}.video-box{min-height:180px}header{padding:10px 12px;height:auto}}
+/* Hover thumbnail is a cheap still-frame preview; actual video seeks only on click/release. */
+.hover-preview{position:absolute;inset:0;background:rgba(4,7,11,.94);display:none;align-items:center;justify-content:center;pointer-events:none;z-index:2}
+.hover-preview.active{display:flex}
+.hover-preview img{width:100%;height:100%;object-fit:contain;image-rendering:auto}
+.hover-preview .hover-time{position:absolute;right:12px;bottom:12px;background:#0a0e17df;border-radius:6px;padding:5px 8px;font:12px Consolas,monospace;color:#fafafa}
+.hover-preview .hover-note{position:absolute;left:12px;bottom:12px;background:#0a0e17df;border-radius:6px;padding:5px 8px;color:#e6ecf4;font-size:11px}
+
+.simple-bulk{gap:12px}.simple-bulk>.green{padding:10px 14px}.more-controls{width:100%;border-top:1px solid #31445c;padding-top:6px}.more-controls summary{font-size:12px;color:#a5c9ed;cursor:pointer}.bulk-more{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:9px}
+/* Tối ưu cho người không rành kỹ thuật: ba bước rõ ràng, xác nhận xuất duy nhất. */
+.guide-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:14px}
+.guide-steps>div{padding:10px 12px;background:#15243a;border:1px solid #334a65;border-radius:10px}
+.guide-steps b{display:block;color:#e8f3ff;font-size:12px;margin-bottom:3px}
+.guide-steps span{display:block;color:#a6bed9;font-size:11px}
+.renderbar{z-index:5}.renderbar .green{padding:12px 18px;font-size:13px}
+#saveState{margin-top:5px}#saveState.working{color:#fcd081}#saveState.saved{color:#8ee9b5}#saveState.error{color:#ff9cad}
+.confirm-shade{position:fixed;inset:0;background:#02070cdd;z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.confirm-box{width:min(100%,530px);background:#152236;border:1px solid #54729a;border-radius:17px;padding:26px;box-shadow:0 24px 90px #000c}
+.confirm-symbol{font-size:34px}.confirm-box h2{margin:8px 0 12px;font-size:22px}.confirm-text{font-size:15px;line-height:1.7;white-space:pre-line;color:#e2edff}.confirm-info{padding:12px;background:#193c35;border:1px solid #387c64;border-radius:9px;line-height:1.7;margin:15px 0}.confirm-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:20px}.confirm-actions button{padding:12px 16px;font-weight:650}
+@media(max-width:850px){.guide-steps{grid-template-columns:1fr}.confirm-actions button{flex:1}}
+
+/* Subtitles are shown ONLY on the preview player; exports stay unchanged. */
+.subtitle-bar{margin-top:9px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:#15243a;border:1px solid #334a65;border-radius:10px;padding:9px 11px}
+.subtitle-bar .sub-label{font-size:12px;font-weight:700;color:#cde3ff}
+.subtitle-bar select{background:#101b2b;border:1px solid #456082;border-radius:8px;color:#e5eefa;padding:8px 10px;min-width:175px;max-width:320px;flex:1}
+.subtitle-bar button{font-size:12px;padding:8px 10px}
+.subtitle-bar button:disabled{opacity:.5}
+.subtitle-source{flex-basis:100%;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.subtitle-source input{flex:1;min-width:235px;height:34px;font-size:12px}
+.subtitle-status{color:#9ab1c9;font-size:11px;flex:1;min-width:180px}
+.video-box video::cue{color:white;background:rgba(0,0,0,.75);font-size:90%;line-height:1.35}
+
+.clip-table tbody tr.merge-selected{background:#244568;outline:1px solid #80bfff;outline-offset:-2px}
+.merge-help{color:#bad3f0;font-size:11px;margin-top:6px}
+/* Studio V3.7 — non-destructive CapCut-style editing */
+.video-box .scrub-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;max-height:340px;z-index:3;pointer-events:none;display:none;background:#05080e}
+.video-box .scrub-video.active{display:block}
+.scrub-badge{position:absolute;z-index:4;bottom:10px;right:12px;font:12px Consolas,monospace;background:#111b2ceb;padding:5px 9px;border:1px solid #4c7eb5;border-radius:7px;pointer-events:none;display:none}
+.scrub-badge.active{display:block}
+.timeline-box #timeline{cursor:grab;touch-action:none}
+.timeline-box #timeline.dragging{cursor:grabbing}
+.timeline-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 9px}
+.timeline-controls button{padding:5px 9px;font-size:11px}
+.timeline-controls button.is-on{color:#fef3c7;border-color:#dba739;background:#4b3717}
+.waveform-state{font-size:11px;color:#a5bacf;margin-left:auto}
+@media(max-width:850px){.timeline-controls{align-items:flex-start}.waveform-state{width:100%}}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">✂</div><div>PARALLEL LAUGH STUDIO <span class="tag good">V3.7.4</span><sub>THÊM VIDEO → SỬA CLIP → XUẤT VIDEO</sub></div></div>
+  <div class="row"><span class="tag good" id="detectorState">● Detector riêng</span><span class="tag wait">● Local / Không tải video lại</span><button id="refreshAll" title="Cập nhật danh sách">⟳ Làm mới</button></div>
+</header>
+<div class="body">
+  <aside class="sidebar">
+    <div class="section-title"><span>HÀNG ĐỢI VIDEO</span><span id="jobCount" class="queue-count">0</span></div>
+    <div id="jobs"><div class="empty">Đang đọc jobs…</div></div>
+    <div class="divider" style="margin:18px 0"></div>
+    <div class="section-title">NẠP NGUỒN VIDEO</div>
+    <p class="small muted">Kéo MP4 vào thư mục input_videos. Worker tự import và detect, không chờ mày dán AI.</p>
+    <button id="openInput" style="width:100%;margin-bottom:10px">📂 Mở thư mục input_videos</button>
+    <div class="divider" style="margin:18px 0"></div>
+    <div class="section-title">HOẠT ĐỘNG</div>
+    <details><summary class="small">Xem log detect</summary><pre id="detectLog" class="small" style="white-space:pre-wrap;overflow-wrap:anywhere;max-height:230px;overflow:auto"></pre></details>
+    <p class="small muted" style="margin-top:12px">CSV mốc cười = gợi ý. ChatGPT + transcript quyết định setup → punchline → reaction.</p>
+  </aside>
+  <main class="main">
+    <div class="guide-steps"><div><b>① Chọn video</b><span>Bên trái. Detector tự tạo CSV.</span></div><div><b>② Chỉnh & duyệt</b><span>Dán kết quả AI, kéo đầu/cuối clip tùy ý.</span></div><div><b>③ Xuất video</b><span>Chỉ lúc xuất lại mới hỏi thay bản cũ.</span></div></div>
+    <div class="panel-kicker">VIDEO ĐANG CHỈNH</div>
+    <div class="row between" style="margin-bottom:14px"><div style="min-width:0"><div class="file-head" id="videoTitle">Chọn video trong hàng đợi</div><div class="small muted" id="videoSub">AI chưa cần xong để detector tiếp tục video khác.</div></div><span id="jobStatus" class="tag wait">Chưa chọn</span></div>
+    <div class="video-box"><video id="player" controls preload="metadata"></video><video id="scrubPlayer" class="scrub-video" muted playsinline preload="metadata" aria-hidden="true"></video><div class="scrub-badge" id="scrubBadge">00:00:00.000</div><div class="hover-preview" id="hoverPreview"><img id="hoverImage" alt="Khung hình preview"><div class="hover-note">Preview thumbnail • Click để phát đúng mốc</div><span class="hover-time" id="hoverTime">00:00:00</span></div><div id="playerEmpty" class="video-empty"><div>▷</div><div>Xem lại video gốc tại đây</div></div></div>
+    <div class="subtitle-bar" id="subtitleBar">
+      <span class="sub-label">💬 Phụ đề khi xem lại:</span>
+      <select id="subtitleSelect" aria-label="Chọn ngôn ngữ phụ đề" disabled><option value="">Tắt phụ đề</option></select>
+      <button id="subtitleScan" title="Chỉ lấy danh sách phụ đề; không tải lại video">🌐 Lấy ngôn ngữ</button>
+      <span class="subtitle-status" id="subtitleStatus">Chọn video rồi nhấn Lấy ngôn ngữ.</span>
+      <div class="subtitle-source" id="subtitleSource" style="display:none">
+        <input id="subtitleUrl" type="text" placeholder="Dán link YouTube gốc hoặc ID video để lấy phụ đề…" aria-label="Link YouTube chỉ dùng lấy phụ đề">
+        <button id="subtitleUseUrl" class="primary">Lấy sub từ link này</button>
+        <span class="tiny muted">Chỉ quét phụ đề, KHÔNG download video.</span>
+      </div>
+    </div>
+    <div class="transport"><button id="back5">↶ 5s</button><button id="playSelection" class="primary">▶ Phát đoạn chọn</button><button id="forward5">5s ↷</button><span class="timecode" id="playerTime">00:00:00 / 00:00:00</span></div>
+    <div class="panel panelpadding" style="margin-top:17px">
+      <div class="timeline-head"><div><div style="font-weight:750">KÉO CHỈNH ĐOẠN VIDEO</div><div class="tiny muted">Clip nằm ngay trên hình video • Rê chuột khi Pause • Kéo mép để cắt chính xác</div></div><div class="row"><button id="zoomOut">−</button><span class="tiny" id="zoomLabel">90s</span><button id="zoomIn">＋</button><button id="fitClip">Vừa clip</button></div></div>
+      <div class="timeline-controls"><button id="snapToggle" class="is-on" title="Bật hoặc tắt nam châm hút vào mốc">🧲 Nam châm: BẬT</button><button id="waveToggle" class="is-on" title="Hiện hoặc ẩn sóng âm">〰 Sóng âm: BẬT</button><span class="waveform-state" id="waveformState">Chọn video để hiển thị sóng âm</span></div><div class="timeline-box"><div class="timeline-instruction">Pause rồi rê chuột để xem hình thật • Giữ chuột kéo vùng trống để pan • Kéo mép vùng CLIP trên video để sửa START/END, tự hít vào thanh đỏ • Alt khi kéo tắt hút • Ctrl + cuộn để zoom • Ctrl + click chọn 2 clip, Alt + G ghép/tách.</div><canvas id="timeline"></canvas><canvas id="overview" title="Nhấn để di chuyển timeline đến khu vực khác"></canvas></div>
+      <div class="row between" style="margin-top:9px"><div class="legend"><span>Chưa duyệt</span><span class="approved">Đã duyệt</span><span class="laugh">Tiếng cười</span><span class="discard">Đoạn bỏ</span></div><div class="tiny muted" id="viewRange">—</div></div>
+    </div>
+    <div class="panel panelpadding">
+      <div class="panel-title"><span>DANH SÁCH CLIP ĐỂ XUẤT</span><div class="row"><span class="tag" id="approvedCount">0 đã duyệt</span><button id="addManual">+ Clip thủ công</button></div></div>
+      <div class="bulk-toolbar simple-bulk">
+        <button id="approveAll" class="green" title="Duyệt toàn bộ clip. Bạn có thể đổi ý bất cứ lúc nào.">✓ DUYỆT TẤT CẢ CLIP</button>
+        <span class="tiny muted" id="bulkState">Chưa chọn video</span>
+        <details class="more-controls"><summary>Tùy chọn: chọn một số clip ▾</summary>
+          <div class="bulk-more">
+            <label title="Chỉ chọn hàng, chưa duyệt. Chọn xong nhấn Duyệt đã chọn."><input type="checkbox" id="selectAllClips"> Chọn tất cả</label>
+            <span class="tag wait" id="selectedCount">0 đã chọn</span>
+            <button id="approveSelected" class="primary">✓ Duyệt đã chọn</button>
+            <button id="unapproveSelected">Bỏ duyệt đã chọn</button>
+            <button id="clearSelected">Bỏ chọn</button>
+          </div>
+        </details>
+      </div>
+      <div class="merge-help">🔗 <b>Ctrl + click</b> chọn hai clip sát mép → <b>Alt + G</b> ghép (tên Clip 1 - tên Clip 2). Chọn clip đã ghép, <b>Alt + G</b> để tách.</div><div class="tiny muted" style="margin:0 0 7px">Muốn xuất nhanh: bấm <b>Duyệt tất cả clip</b> → <b>Xuất video</b>. Muốn bỏ clip nào thì bỏ tick ✓ ở hàng đó.</div>
+      <div style="overflow-x:auto"><table class="clip-table"><thead><tr><th>Chọn</th><th>✓</th><th>Tên clip</th><th>Thời lượng</th><th>Thời gian gốc</th><th>Trạng thái</th></tr></thead><tbody id="clipRows"><tr><td colspan="6" class="empty">Dán kết quả AI ở bảng bên phải để xuất hiện các clip.</td></tr></tbody></table></div>
+    </div>
+    <div class="renderbar"><div><strong id="renderSummary">Chưa chọn clip để xuất</strong><div class="noticebar" id="saveState" aria-live="polite">✓ Thay đổi sẽ được tự động lưu</div></div><div class="row"><button id="savePlan" title="Chỉ cần khi muốn lưu ngay, chương trình vẫn tự lưu">💾 Lưu ngay</button><button id="renderNow" class="green">✂ XUẤT VIDEO ĐÃ DUYỆT</button></div></div>
+  </main>
+  <aside class="right">
+    <div>
+      <div class="section-title">SỬA THỜI GIAN CLIP <span class="tag">±0.5s</span></div>
+      <div id="noSelection" class="hint">Chọn một clip trên timeline hoặc trong bảng bên dưới. Kéo đầu/cuối để chỉnh, hoặc nhập thời gian trực tiếp ở đây.</div>
+      <div id="editBox" style="display:none">
+        <div class="field"><label class="input-label">Tên clip</label><input id="clipTitle" type="text" placeholder="Tên clip"></div>
+        <div class="row between" style="margin-bottom:12px"><span class="selected-name" id="editClipName">Clip 01</span><span class="tag wait" id="segmentCount">1 đoạn nguồn</span></div>
+        <div class="field"><label class="input-label">BẮT ĐẦU (START)</label><input type="text" id="startInput" class="timeinput" spellcheck="false"><div class="fieldactions"><button class="stepbtn" data-change="start" data-amount="-1">−1s</button><button class="stepbtn" data-change="start" data-amount="-.5">−0.5s</button><button class="stepbtn" data-change="start" data-amount=".5">+0.5s</button><button class="stepbtn" data-change="start" data-amount="1">+1s</button></div></div>
+        <div class="field"><label class="input-label">KẾT THÚC (END)</label><input type="text" id="endInput" class="timeinput" spellcheck="false"><div class="fieldactions"><button class="stepbtn" data-change="end" data-amount="-1">−1s</button><button class="stepbtn" data-change="end" data-amount="-.5">−0.5s</button><button class="stepbtn" data-change="end" data-amount=".5">+0.5s</button><button class="stepbtn" data-change="end" data-amount="1">+1s</button></div></div>
+        <div class="hint" style="margin-bottom:13px">Muốn clip dài hơn 2 giây? Kéo mép phải ra, hoặc bấm nút <b>+1s</b> ở phần Kết thúc 2 lần. Mốc được tự lưu.</div>
+        <div class="quick-actions"><button id="prevClip">◀ Clip trước</button><button id="nextClip">Clip sau ▶</button></div>
+        <div class="tiny muted" style="margin:5px 0 11px">Chuyển tới clip khác (không làm thay đổi mốc).</div>
+        <div class="quick-actions"><button id="prevSeg" title="Chuyển tới segment trước của cùng clip">◀ Đoạn nguồn trước</button><button id="nextSeg" title="Chuyển tới segment sau của cùng clip">Đoạn nguồn sau ▶</button></div>
+        <div class="tiny muted" style="margin:5px 0 11px">Hai nút này chỉ dùng khi MỘT clip được ghép từ nhiều đoạn. Nếu bị mờ là bình thường.</div>
+        <div class="quick-actions" style="margin-top:8px"><button id="approveClip" class="green" style="flex:1">✓ Duyệt clip</button><button id="deleteClip" title="Xóa khỏi plan">🗑</button></div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">DÁN MỐC CLIP TỪ CHATGPT</div>
+      <p class="small muted">Dán <b>JSON có key clips</b> từ prompt V5. Mỗi clip có <code>title</code> và <code>segments</code> là các khoảng GIỮ. Vẫn hỗ trợ CUT → DONE → CHAPTER → DONE cũ (kể cả dán một dòng).</p>
+      <textarea id="aiInput" placeholder='{"format":"parallel-laugh-v1","clips":[{"title":"[ABSURD] Funny moment","segments":[["00:02:20","00:06:10"]]}]}' spellcheck="false"></textarea>
+      <button id="importAI" class="primary" style="width:100%;margin-top:9px">① ĐƯA CÁC CLIP LÊN TIMELINE</button>
+      <p class="tiny muted" style="margin:8px 0 2px">Dán lần nữa sẽ thay các mốc đang chỉnh. Studio sẽ hỏi xác nhận trước khi thay.</p>
+      <div class="divider"></div>
+      <div class="section-title">MỞ FILE TRÊN MÁY</div>
+      <div class="quick-actions"><button id="openJob">📂 Video + CSV</button><button id="openDone">📁 Clip đã xuất</button></div>
+      <p class="small muted">Tự lấy CSV, transcript và prompt bên ngoài. Chỉ cần dán kết quả AI vào ô trên.</p>
+    </div>
+  </aside>
+</div>
+<div class="confirm-shade" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" style="display:none"><div class="confirm-box"><div class="confirm-symbol">📁</div><h2 id="confirmTitle">Sẵn sàng xuất video?</h2><p id="confirmText" class="confirm-text"></p><div id="confirmOld" class="confirm-info" style="display:none">Bản cũ sẽ được giữ an toàn trong thư mục <b>done/_archive</b>. Nếu cắt bản mới thất bại, bản cũ sẽ không bị thay thế.</div><div class="confirm-actions"><button id="cancelExport">← Quay lại chỉnh</button><button class="green" id="confirmExport">✓ Xuất video</button></div></div></div>
+<div id="toast" class="notify" role="status" aria-live="polite" aria-atomic="true"></div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const player=$('player'), timeline=$('timeline'), overview=$('overview');
+let job=null,plan=null, jobs=[],selected={clip:0,seg:0},selectedRows=new Set(),mergeSelection=new Set(),duration=0,bulkBusy=false,exportBusy=false;
+let viewStart=0, viewSpan=90, drag=null, playingSelection=null, changed=false, saveTimer=null, rendering=false, editRevision=0, savingPromise=null, saveOperation=null;
+let hoverAt=null, hoverTimer=null, hoverImageKey=null, hoverWanted=null, seekLast=0, seekTimer=null, thumbMap=new Map(), thumbQueue=[], thumbPending=new Set(), thumbActive=0, thumbJob='', renderScheduled=false;
+let snapOn=true, waveOn=true, waveform=null, waveSerial=0, snapGuide=null, scrubWant=null, scrubShown=false, scrubTimer=null, scrubCommit=false, scrubJob='', scrubLast=0;
+function drawSoon(){if(renderScheduled)return;renderScheduled=true;requestAnimationFrame(()=>{renderScheduled=false;drawTimeline()})}
+function resetThumbnails(id){thumbJob=id;thumbMap=new Map();thumbQueue=[];thumbPending.clear();thumbActive=0;hoverImageKey=null;hideHover()}
+function thumbKey(t){return Math.floor(Math.max(0,t)/3)*3}
+function requestThumb(t){
+ if(!job||!job.id||!duration)return;
+ let key=thumbKey(t),cacheKey=job.id+':'+key;
+ if(thumbMap.has(cacheKey)||thumbPending.has(cacheKey))return;
+ thumbPending.add(cacheKey);thumbQueue.push({id:job.id,key,cacheKey});drainThumbs();
+}
+function drainThumbs(){
+ while(thumbActive<2&&thumbQueue.length){let item=thumbQueue.shift();if(item.id!==thumbJob){thumbPending.delete(item.cacheKey);continue}thumbActive++;
+ let img=new Image();img.onload=()=>{thumbActive--;thumbPending.delete(item.cacheKey);if(thumbJob===item.id){thumbMap.set(item.cacheKey,img);while(thumbMap.size>160)thumbMap.delete(thumbMap.keys().next().value);drawSoon();}drainThumbs()};
+ img.onerror=()=>{thumbActive--;thumbPending.delete(item.cacheKey);if(thumbJob===item.id)thumbMap.set(item.cacheKey,null);drainThumbs()};
+ img.src='/thumb?id='+encodeURIComponent(item.id)+'&t='+item.key;
+ }
+}
+function seekPreview(t,force=false){
+ if(!job||!Number.isFinite(t))return;
+ let newTime=clamp(t,0,Math.max(0,duration-.03));
+ if(force||Math.abs(player.currentTime-newTime)>.025){try{player.currentTime=newTime}catch(e){}}
+ $('playerTime').textContent=fmt(newTime,true)+' / '+fmt(duration)
+}
+// A SECOND, MUTED video decoder makes hover preview independent from the official playhead.
+// No 3-second thumbnail steps and no waiting for mouseup. The browser decodes real MP4 frames.
+const scrubPlayer=$('scrubPlayer');
+function hideHover(){clearTimeout(hoverTimer);$('hoverPreview').classList.remove('active')}
+function scrubHide(){
+ scrubWant=null;clearTimeout(scrubTimer);scrubPlayer.classList.remove('active');$('scrubBadge').classList.remove('active');scrubShown=false;
+}
+function scrubReset(id){
+ scrubHide();scrubJob=id||'';scrubCommit=false;try{scrubPlayer.removeAttribute('src');scrubPlayer.load()}catch(e){}
+ if(id){scrubPlayer.src='/media?id='+encodeURIComponent(id);scrubPlayer.load()}
+}
+function scrubRequest(t){
+ // The real player owns the preview while playback is running. Never override its frames.
+ if(!player.paused){scrubHide();return}
+ if(!job||!duration||!Number.isFinite(t)||scrubJob!==job.id)return;
+ scrubWant=clamp(t,0,Math.max(0,duration-.035));
+ $('scrubBadge').textContent=fmt(scrubWant,true);
+ if(!scrubPlayer.readyState)return;
+ scrubPump();
+}
+function scrubPump(){
+ if(!player.paused){scrubHide();return}
+ if(scrubWant===null||!scrubPlayer.readyState||scrubPlayer.seeking)return;
+ const now=performance.now();
+ if(now-scrubLast<32){clearTimeout(scrubTimer);scrubTimer=setTimeout(scrubPump,35);return}
+ scrubLast=now;
+ if(Math.abs(scrubPlayer.currentTime-scrubWant)<.02){scrubReveal();return}
+ try{scrubPlayer.currentTime=scrubWant}catch(e){}
+}
+function scrubReveal(){
+ if(!player.paused||scrubWant===null||!job||scrubJob!==job.id)return;
+ scrubShown=true;scrubPlayer.classList.add('active');$('scrubBadge').classList.add('active');
+}
+scrubPlayer.addEventListener('loadedmetadata',scrubPump);
+scrubPlayer.addEventListener('seeked',()=>{
+ if(scrubWant===null)return;
+ scrubReveal();
+ if(Math.abs(scrubWant-scrubPlayer.currentTime)>.035)scrubPump();
+});
+scrubPlayer.addEventListener('error',()=>{
+ // Codec might not be directly seekable by the browser. Keep the main player available.
+ if(scrubWant!==null){$('scrubBadge').textContent='Không hỗ trợ preview codec';scrubPlayer.classList.remove('active')}
+});
+function loadWaveform(id){
+ const serial=++waveSerial;waveform=null;
+ $('waveformState').textContent='Đang tạo sóng âm từ MP4…';drawSoon();
+ req('/api/waveform?id='+encodeURIComponent(id)).then(data=>{
+   if(serial!==waveSerial||job?.id!==id)return;
+   waveform={peaks:data.peaks||[],interval:data.interval||1,duration:data.duration||duration};
+   $('waveformState').textContent=waveform.peaks.length?'✓ Sóng âm đã sẵn sàng':'Video không có audio';drawSoon();
+ }).catch(err=>{if(serial!==waveSerial)return;$('waveformState').textContent='Không tạo được sóng âm: '+err.message.slice(0,90);drawSoon()});
+}
+function dirty(){changed=true;editRevision++;saveIndicator('Đang chỉnh — sẽ tự lưu…','working')}
+function saveIndicator(text,status=''){let e=$('saveState');if(e){e.textContent=text;e.className='noticebar '+status}}
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const fmt=(v,ms=false)=>{v=Math.max(0,Number(v)||0);let sec=Math.floor(v),h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return [h,m,s].map(n=>String(n).padStart(2,'0')).join(':')+(ms?'.'+String(Math.round((v-sec)*1000)).padStart(3,'0'):'')};
+function parseTime(raw){let value=String(raw).trim().replace(',','.');if(/^\d+(\.\d+)?$/.test(value))return Number(value);let p=value.split(':');if(p.length!==2&&p.length!==3)return NaN;let nums=p.map(Number);if(nums.some(n=>!Number.isFinite(n)||n<0))return NaN;let seconds=p.length===3?nums[0]*3600+nums[1]*60+nums[2]:nums[0]*60+nums[1];if(nums[nums.length-1]>=60||p.length===3&&nums[1]>=60)return NaN;return seconds}
+function toast(msg,error=false){
+ let n=$('toast');if(!n)return;
+ n.textContent=String(msg||'Không rõ kết quả');n.className='notify visible'+(error?' error':'');
+ n.setAttribute('role',error?'alert':'status');clearTimeout(n._timer);
+ n._timer=setTimeout(()=>{n.className='notify'},error?7500:4100)
+}
+window.addEventListener('error',e=>{if(e.target===window)toast('Giao diện lỗi: '+(e.message||'JavaScript không chạy'),true)});
+window.addEventListener('unhandledrejection',e=>{let msg=e.reason?.message||String(e.reason||'');toast('Thao tác thất bại: '+msg,true)});
+const escapeHtml=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function req(url,data){
+ let opt=data===undefined?{}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)};
+ let res;
+ try{res=await fetch(url,opt)}catch(e){throw Error('Không kết nối được Studio. Kiểm tra cửa sổ START_STUDIO.bat. '+e.message)}
+ let val;
+ try{val=await res.json()}catch(e){throw Error('Server trả về dữ liệu không hợp lệ (HTTP '+res.status+'). Thử khởi động lại Studio')}
+ if(!res.ok||!val.ok)throw Error(val.error||'HTTP '+res.status+' — Thao tác thất bại');
+ return val
+}
+
+// YouTube captions support; separate from detector/timeline/render.
+let subtitleVideoId='', subtitleList=[], subtitleTrack=null, subtitleObjectUrl='', subtitleSerial=0;
+function clearSubtitleTrack(){
+  for(const track of Array.from(player.querySelectorAll('track[data-studio-sub]'))){
+    try{track.track.mode='disabled'}catch(_){}
+    track.remove();
+  }
+  if(subtitleObjectUrl){URL.revokeObjectURL(subtitleObjectUrl);subtitleObjectUrl=''}
+  subtitleTrack=null;
+}
+function resetSubtitleUi(){
+  subtitleSerial++;
+  subtitleVideoId='';subtitleList=[];clearSubtitleTrack();
+  $('subtitleSelect').innerHTML='<option value="">Tắt phụ đề</option>';
+  $('subtitleSelect').disabled=true;$('subtitleScan').disabled=!job;
+  $('subtitleSource').style.display='none';
+  $('subtitleUrl').value='';
+  $('subtitleStatus').textContent=job?'Bấm Lấy ngôn ngữ để xem sub.':'Chọn video rồi nhấn Lấy ngôn ngữ.';
+}
+async function loadSubtitleLanguages(source=''){
+  if(!job)return toast('Hãy chọn video trước',true);
+  const requestedId=job.id, token=++subtitleSerial;
+  $('subtitleScan').disabled=true;$('subtitleUseUrl').disabled=true;
+  $('subtitleStatus').textContent='Đang lấy danh sách ngôn ngữ từ YouTube…';
+  try{
+    const data=await req('/api/subtitle-languages',{id:requestedId,source:source.trim()});
+    if(!job||job.id!==requestedId||token!==subtitleSerial)return;
+    subtitleVideoId=data.video_id;subtitleList=data.languages||[];
+    const options=['<option value="">Tắt phụ đề</option>'];
+    for(const row of subtitleList){
+      const name=(row.code==='vi'?'🇻🇳 Tiếng Việt':row.code==='en'?'🇬🇧 English':row.name)+' — '+row.kind;
+      options.push('<option value="'+escapeHtml(row.code)+'">'+escapeHtml(name)+'</option>');
+    }
+    $('subtitleSelect').innerHTML=options.join('');
+    $('subtitleSelect').disabled=false;$('subtitleSource').style.display='none';
+    // ONLY scan; do not fetch a caption until the user explicitly chooses a track.
+    const hasVi=subtitleList.some(x=>x.code==='vi');
+    $('subtitleSelect').value='';
+    $('subtitleStatus').textContent='Đã tìm thấy '+subtitleList.length+' ngôn ngữ. '+(data.cookie_status?.message||'')+' '+(hasVi?'Chọn Tiếng Việt để tải sub.':'Không có sub Tiếng Việt; chọn ngôn ngữ khác.');
+    toast('Đã quét '+subtitleList.length+' ngôn ngữ. Chọn ngôn ngữ muốn hiển thị; chưa tải sub.');
+  }catch(error){
+    if(!job||job.id!==requestedId||token!==subtitleSerial)return;
+    $('subtitleStatus').textContent='Chưa lấy được phụ đề: '+error.message;
+    $('subtitleSource').style.display='flex';
+    if(source)toast(error.message,true);
+    else toast('Không tự tìm được sub. Dán link YouTube gốc bên dưới rồi thử lại. '+error.message,true);
+  }finally{
+    if(job&&job.id===requestedId){$('subtitleScan').disabled=false;$('subtitleUseUrl').disabled=false;}
+  }
+}
+async function selectSubtitle(code){
+  const requestedId=job?.id, token=++subtitleSerial;
+  clearSubtitleTrack();
+  if(!code){$('subtitleStatus').textContent='Đã tắt phụ đề';return;}
+  const lang=subtitleList.find(x=>x.code===code);
+  if(!lang||!requestedId){toast('Ngôn ngữ này không có trong video.',true);return;}
+  $('subtitleStatus').textContent='Đang tải phụ đề '+lang.name+'…';
+  $('subtitleSelect').disabled=true;
+  try{
+    const res=await fetch('/api/subtitle-vtt?id='+encodeURIComponent(requestedId)+'&lang='+encodeURIComponent(code));
+    if(!res.ok){
+      const err=await res.json().catch(()=>({error:'HTTP '+res.status}));
+      throw Error(err.error||'Tải phụ đề thất bại');
+    }
+    const vtt=await res.blob();
+    if(token!==subtitleSerial||job?.id!==requestedId)return;
+    subtitleObjectUrl=URL.createObjectURL(new Blob([vtt],{type:'text/vtt'}));
+    let track=document.createElement('track');track.dataset.studioSub='1';
+    track.kind='subtitles';track.label=lang.name;track.srclang=code;
+    track.src=subtitleObjectUrl;player.appendChild(track);subtitleTrack=track;
+    track.track.mode='showing';
+    track.addEventListener('load',()=>{if(job?.id===requestedId&&subtitleTrack===track){track.track.mode='showing';$('subtitleStatus').textContent='✓ Đang hiện phụ đề '+lang.name+' (xem video hoặc tua timeline).';}});
+    $('subtitleStatus').textContent='Đã bật '+lang.name+' — sub chỉ hiện khi xem, không ghi vào MP4 xuất.';
+  }catch(err){
+    if(token!==subtitleSerial||job?.id!==requestedId)return;
+    $('subtitleStatus').textContent='Không lấy được phụ đề: '+err.message;
+    toast(err.message,true);$('subtitleSelect').value='';
+  }finally{if(token===subtitleSerial&&job?.id===requestedId)$('subtitleSelect').disabled=false;}
+}
+$('subtitleScan').onclick=()=>loadSubtitleLanguages();
+$('subtitleUseUrl').onclick=()=>loadSubtitleLanguages($('subtitleUrl').value);
+$('subtitleUrl').addEventListener('keydown',e=>{if(e.key==='Enter')loadSubtitleLanguages($('subtitleUrl').value)});
+$('subtitleSelect').onchange=()=>selectSubtitle($('subtitleSelect').value);
+function stateTag(s){let cls=s==='CUT_DONE'?'good':s==='CUTTING'||s==='DETECTING'?'busy':s.endsWith('ERROR')?'bad':s==='WAITING_AI'?'good':'wait';let text={WAITING_AI:'CSV sẵn sàng',DETECTING:'Đang detect',WAITING_DETECT:'Chờ detect',CUT_DONE:'Đã xuất',CUTTING:'Đang cắt',CUT_ERROR:'Lỗi cắt',DETECT_ERROR:'Lỗi detector'}[s]||s;return '<span class="tag '+cls+'">'+text+'</span>'}
+async function refreshJobs(){
+ try {
+  const data=await req('/api/jobs');jobs=data.jobs;
+  const detector=data.workers?.detect==='running';
+  $('detectorState').className='tag '+(detector?'good':'bad');
+  $('detectorState').textContent=detector?'● Detector hoạt động':'● Detector chưa chạy';
+  $('jobCount').textContent=jobs.length;
+  $('jobs').innerHTML=jobs.map(j=>'<div class="job '+(job&&job.id===j.id?'active':'')+'" data-id="'+escapeHtml(j.id)+'"><div class="jobtitle" title="'+escapeHtml(j.title)+'">'+escapeHtml(j.title)+'</div><div class="jobid">'+escapeHtml(j.id)+'</div><div class="jobfooter">'+stateTag(j.status)+'<span class="tiny muted">'+(j.laugh_count||0)+' laughs</span></div></div>').join('')||'<div class="empty">Chưa có video.<br>Chép MP4 vào input_videos/</div>';
+  document.querySelectorAll('.job').forEach(x=>x.onclick=()=>openJob(x.dataset.id));
+  if(job){
+   let match=jobs.find(j=>j.id===job.id);
+   if(match){
+    $('jobStatus').innerHTML=stateTag(match.status);
+    if(rendering&&match.status!=='CUTTING'){
+      rendering=false;job.status=match.status;job.has_previous_export=!!match.has_previous_export;
+      toast(match.status==='CUT_ERROR'?'Xuất thất bại. Bản cũ vẫn an toàn. Xem thông báo trong job.':'✓ Xuất xong. Nhấn “Clip đã xuất” để mở thư mục.',match.status==='CUT_ERROR');
+      renderAll();
+    }else if(!rendering){job.status=match.status;job.has_previous_export=!!match.has_previous_export;}
+   }
+  }
+ }catch(err){toast('Không làm mới được: '+err.message,true)}
+}
+async function openJob(id){if(changed&&!(await savePlan(true)))return;await loadJob(id)}
+async function loadJob(id,preserve=false){try{let data=await req('/api/job?id='+encodeURIComponent(id));job=data.job;duration=job.duration;plan=job.plan;resetSubtitleUi();if(thumbJob!==job.id)resetThumbnails(job.id);selected={clip:0,seg:0};selectedRows.clear();mergeSelection.clear();changed=false;saveIndicator('✓ Có thể sửa thoải mái — thay đổi sẽ tự lưu','saved');$('videoTitle').textContent=job.title;$('videoSub').textContent=job.id+' • Video '+fmt(duration)+' • '+job.laughs.length+' sự kiện cười';$('jobStatus').innerHTML=stateTag(job.status);$('aiInput').value=job.ai_text||'';player.src='/media?id='+encodeURIComponent(id);player.load();scrubReset(id);loadWaveform(id);$('playerEmpty').style.display='none';hideHover();if(job.error)toast('Lỗi render: '+job.error.slice(-180),true);if(plan?.clips?.length){let first=plan.clips[0].segments[0];viewSpan=Math.min(90,duration);viewStart=clamp((first[0]+first[1])/2-viewSpan/2,0,Math.max(0,duration-viewSpan))}else{viewStart=0;viewSpan=Math.min(90,duration)};renderAll();await refreshJobs()}catch(err){toast(err.message,true)}}
+function sel(){if(!plan||!plan.clips.length)return null;let clip=plan.clips[selected.clip];if(!clip)return null;return{clip,segment:clip.segments[selected.seg],ci:selected.clip,si:selected.seg}}
+// keepViewport prevents a long, partially-visible clip from recentering the entire timeline on pointerdown.
+function pick(ci,si=0,seek=false,keepViewport=false){mergeSelection.clear();selected={clip:ci,seg:si};let current=sel();if(!current)return;let range=current.segment;if(seek)player.currentTime=range[0];if(!keepViewport&&(range[0]<viewStart+.1||range[1]>viewStart+viewSpan-.1))centerAt((range[0]+range[1])/2);renderAll()}
+function centerAt(t){viewStart=clamp(t-viewSpan/2,0,Math.max(0,duration-viewSpan));drawCanvases()}
+function collect(){let r=[];plan?.clips.forEach((c,i)=>c.segments.forEach((p,j)=>r.push({s:p[0],e:p[1],ci:i,si:j,approved:c.approved})));return r.sort((a,b)=>a.s-b.s)}
+
+// V3.7.3: snapshots of atomic source clips are preserved across saves/restarts.
+function cloneClip(c){return JSON.parse(JSON.stringify(c))}
+function sourceOrdinal(c,idx){
+ const m=String(c.id||'').match(/^clip_(\d+)$/);
+ if(m&&Number(m[1])>0)return Number(m[1]);
+ let n=1;for(let i=0;i<idx;i++)n+=plan.clips[i].merge_sources?.length||1;
+ return n;
+}
+function atomicSources(c,idx){
+ if(c.merge_sources)return c.merge_sources.map(cloneClip);
+ const snap=cloneClip(c);snap.merge_order=sourceOrdinal(c,idx);return [snap];
+}
+function mergeTitle(left, right){
+ // The visible merged title is exactly the two original titles in timeline order.
+ // Nested merges produce: Title 1 - Title 2 - Title 3. Source titles are preserved
+ // separately in merge_sources, so Alt+G can restore them without information loss.
+ return left.trim()+' - '+right.trim();
+}
+function toggleMergeSelection(ci,si=0){
+ if(!plan?.clips?.[ci])return;
+ if(mergeSelection.has(ci))mergeSelection.delete(ci);
+ else if(mergeSelection.size>=2){toast('Đã chọn 2 clip. Ctrl + click để bỏ chọn trước.',true);return}
+ else mergeSelection.add(ci);
+ selected={clip:ci,seg:si};renderAll();
+ if(mergeSelection.size)toast('Đang chọn '+mergeSelection.size+'/2 clip. Ctrl + click clip còn lại rồi Alt + G.');
+}
+function mergeClips(){
+ if(mergeSelection.size!==2){toast('Hãy Ctrl + click chọn đúng hai clip để ghép.',true);return}
+ const clips=[...mergeSelection].map(i=>({i,c:plan.clips[i]})).sort((a,b)=>a.c.segments[0][0]-b.c.segments[0][0]);
+ const [a,b]=clips;
+ if(a.c.segments.length!==1||b.c.segments.length!==1){toast('Chỉ ghép hai clip liên tục, mỗi clip một segment.',true);return}
+ const end=a.c.segments[0][1],start=b.c.segments[0][0];
+ if(Math.round(end*1000)!==Math.round(start*1000)){
+  toast(start>end?'Còn khoảng trống '+(start-end).toFixed(3)+' giây, kéo hai mép chạm nhau trước khi ghép.':'Hai clip đang chồng lên nhau, không thể ghép.',true);return;
+ }
+ const sources=[...atomicSources(a.c,a.i),...atomicSources(b.c,b.i)];
+ if(sources.length>200){toast('Một clip ghép tối đa 200 clip gốc.',true);return}
+ const merged={id:'merge_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7),
+  title:mergeTitle(a.c.title,b.c.title),approved:a.c.approved&&b.c.approved,
+  segments:[[a.c.segments[0][0],b.c.segments[0][1]]],merge_sources:sources};
+ const low=Math.min(a.i,b.i),high=Math.max(a.i,b.i);
+ plan.clips.splice(high,1);plan.clips.splice(low,1,merged);
+ mergeSelection.clear();selectedRows.clear();playingSelection=null;selected={clip:low,seg:0};
+ dirty();renderAll();scheduleSave();
+ toast('🔗 Đã ghép '+sources.length+' clip gốc. Tên mới: '+(merged.title.length>105?merged.title.slice(0,105)+'…':merged.title)+(!merged.approved?' (Chưa duyệt)':''));
+}
+function unmergeClip(ci){
+ const merged=plan?.clips?.[ci];
+ if(!merged?.merge_sources?.length){toast('Clip được chọn không phải clip ghép.',true);return}
+ const original=merged.merge_sources.map(s=>{const c=cloneClip(s);delete c.merge_order;return c});
+ let seen=new Set();
+ for(const c of original){
+  if(seen.has(c.id)||plan.clips.some((x,i)=>i!==ci&&x.id===c.id)){toast('Không thể tách vì trùng ID clip.',true);return}seen.add(c.id);
+  for(const seg of c.segments)for(const other of collect()){
+   if(other.ci!==ci&&seg[0]<other.e-.001&&seg[1]>other.s+.001){toast('Mốc clip gốc hiện chồng clip khác. Chỉnh mốc rồi tách lại.',true);return}
+  }
+ }
+ plan.clips.splice(ci,1,...original);
+ mergeSelection.clear();selectedRows.clear();playingSelection=null;selected={clip:ci,seg:0};
+ dirty();renderAll();scheduleSave();toast('↩ Đã tách thành '+original.length+' clip, khôi phục đủ tên, tag và mốc gốc.');
+}
+function mergeOrUnmerge(){
+ if(!plan?.clips?.length){toast('Chưa có clip để ghép.',true);return}
+ if(mergeSelection.size===2){mergeClips();return}
+ const ci=mergeSelection.size===1?[...mergeSelection][0]:selected.clip;
+ if(plan.clips[ci]?.merge_sources){unmergeClip(ci);return}
+ toast('Ctrl + click chọn hai clip sát nhau rồi Alt + G, hoặc chọn clip đã ghép để tách.',true);
+}
+
+function validateChange(ci,si,edge,v,quiet=false){let orig=plan.clips[ci].segments[si];let proposed=orig.slice();proposed[edge]=clamp(Math.round(v*1000)/1000,0,duration);if(proposed[1]-proposed[0]<.2){if(!quiet)toast('Clip phải dài tối thiểu 0.2 giây',true);return false}for(let o of collect()){if(o.ci===ci&&o.si===si)continue;if(proposed[0]<o.e-.001&&proposed[1]>o.s+.001){if(!quiet)toast('Mốc chồng lên clip khác. Hãy thu mốc còn lại trước.',true);return false}}
+// Keep segments within an individual chapter in source-time order.
+let segments=plan.clips[ci].segments;if(si>0&&proposed[0]<segments[si-1][1]-.001)return false;if(si<segments.length-1&&proposed[1]>segments[si+1][0]+.001)return false;
+orig[edge]=proposed[edge];dirty();return true}
+function shiftTime(edge,delta){let p=sel();if(!p)return;if(validateChange(p.ci,p.si,edge,p.segment[edge]+delta)){renderAll();scheduleSave()}}
+function applyInput(edge){let p=sel();if(!p)return;let raw=$(edge===0?'startInput':'endInput').value, v=parseTime(raw);if(!Number.isFinite(v)){toast('Thời gian sai định dạng. Ví dụ 00:10:16.000',true);renderEditor();return}if(validateChange(p.ci,p.si,edge,v)){renderAll();scheduleSave()}else renderEditor()}
+function onEdit(){let p=sel();if(!p){$('noSelection').style.display='block';$('editBox').style.display='none';return}$('noSelection').style.display='none';$('editBox').style.display='block';$('clipTitle').value=p.clip.title;$('editClipName').textContent='Clip '+String(p.ci+1).padStart(2,'0')+' · Segment '+(p.si+1);$('segmentCount').textContent=p.clip.merge_sources?p.clip.merge_sources.length+' clip gốc đã ghép':p.clip.segments.length+' đoạn nguồn';$('startInput').value=fmt(p.segment[0],true);$('endInput').value=fmt(p.segment[1],true);$('approveClip').textContent=p.clip.approved?'✓ Đã duyệt · Bỏ tick':'✓ Duyệt clip';$('approveClip').className=p.clip.approved?'':'green';$('prevSeg').disabled=p.si<=0;$('nextSeg').disabled=p.si>=p.clip.segments.length-1;$('prevClip').disabled=p.ci<=0;$('nextClip').disabled=p.ci>=plan.clips.length-1;const busy=false;for(let id of ['startInput','endInput','clipTitle','approveClip','deleteClip'])$(id).disabled=busy;document.querySelectorAll('[data-change]').forEach(x=>x.disabled=busy)}
+function renderClips(){
+ let list=plan?.clips||[],approved=list.filter(c=>c.approved);
+ const locked=!job;
+ for(let i of Array.from(selectedRows))if(i<0||i>=list.length)selectedRows.delete(i);
+ let selectedN=selectedRows.size;
+ $('approvedCount').textContent=approved.length+' / '+list.length+' đã duyệt';
+ $('selectedCount').textContent=selectedN+' đã chọn';
+ $('selectAllClips').disabled=false; // Always respond with a toast even for a completed job.
+ $('selectAllClips').checked=list.length>0&&selectedN===list.length;
+ $('selectAllClips').indeterminate=selectedN>0&&selectedN<list.length;
+ $('approveSelected').disabled=false;
+ $('unapproveSelected').disabled=false;
+ $('clearSelected').disabled=false;
+ $('approveAll').disabled=false;
+ $('bulkState').textContent=!job?'Chưa chọn video':!list.length?'Chưa có mốc AI':job.has_previous_export?'Đã có video xuất — vẫn chỉnh bình thường, chỉ hỏi khi xuất lại':approved.length===list.length?'Đã duyệt hết '+list.length+' clip':'Còn '+(list.length-approved.length)+' clip chưa duyệt';
+ 
+ let seconds=approved.reduce((t,c)=>t+c.segments.reduce((n,p)=>n+p[1]-p[0],0),0);
+ $('renderSummary').textContent=approved.length?`${approved.length} clip được duyệt · ${fmt(seconds)} video`:'Chưa có clip được duyệt';
+ $('renderNow').disabled=false;
+ $('savePlan').disabled=!plan||locked;
+ $('addManual').disabled=!plan||locked;
+ $('clipRows').innerHTML=list.length?list.map((c,i)=>{
+   let start=c.segments[0][0],end=c.segments.at(-1)[1],time=c.segments.reduce((s,r)=>s+r[1]-r[0],0);
+   return `<tr data-clip="${i}" class="${selected.clip===i?'selected':''} ${mergeSelection.has(i)?'merge-selected':''}">
+     <td><input type="checkbox" data-select="${i}" title="Chọn để duyệt hàng loạt" ${selectedRows.has(i)?'checked':''}></td>
+     <td><input type="checkbox" data-approve="${i}" title="Duyệt clip này ngay" ${c.approved?'checked':''}></td>
+     <td><span class="clip-title" title="${escapeHtml(c.title)}">${String(i+1).padStart(2,'0')} · ${c.merge_sources?'🔗 ':''}${escapeHtml(c.title)}</span></td><td>${fmt(time)}</td>
+     <td>${fmt(start)} → ${fmt(end)}${c.segments.length>1?' <span class="tag">'+c.segments.length+' segments</span>':''}</td>
+     <td>${c.approved?'<span class="tag good">Đã duyệt</span>':'<span class="tag wait">Chưa duyệt</span>'}${c.merge_sources?' <span class="tag">'+c.merge_sources.length+' clip gốc</span>':''}</td></tr>`;
+ }).join(''):'<tr><td colspan="6" class="empty">Chưa có clip. Dán kết quả AI ở bên phải, nhấn ÁP MỐC AI.</td></tr>';
+ $('clipRows').querySelectorAll('tr[data-clip]').forEach(r=>r.onclick=e=>{if(e.target.type!=='checkbox'){if(e.ctrlKey||e.metaKey)toggleMergeSelection(+r.dataset.clip);else pick(+r.dataset.clip,0,true)}});
+ $('clipRows').querySelectorAll('[data-select]').forEach(x=>x.onchange=e=>{
+   let i=+e.target.dataset.select;if(e.target.checked)selectedRows.add(i);else selectedRows.delete(i);
+   renderClips();toast('Đã chọn '+selectedRows.size+' / '+(plan?.clips.length||0)+' clip.');
+ });
+ $('clipRows').querySelectorAll('[data-approve]').forEach(x=>x.onchange=async e=>{
+   const i=+e.target.dataset.approve, checked=e.target.checked;
+   if(!job||!plan?.clips[i])return;
+   
+   plan.clips[i].approved=checked;dirty();renderAll();toast('Đang lưu trạng thái clip '+(i+1)+'…');
+   if(await savePlan(true))toast('Đã '+(checked?'duyệt':'bỏ duyệt')+' và lưu clip '+(i+1));
+ });
+}
+function selectAllClips(checked){
+ if(!job||!plan||!plan.clips.length){$('selectAllClips').checked=false;toast('Chưa có clip để chọn. Hãy chọn video rồi dán JSON AI.',true);return}
+ selectedRows=checked?new Set(plan.clips.map((_,i)=>i)):new Set();renderClips();
+ toast(checked?'Đã CHỌN '+selectedRows.size+' clip (chưa duyệt). Nhấn "Duyệt đã chọn" hoặc "Duyệt tất cả".':'Đã bỏ chọn tất cả. Trạng thái duyệt không đổi.');
+}
+async function bulkApprove(target,all=false){
+ if(bulkBusy){toast('Đang xử lý yêu cầu duyệt trước, vui lòng đợi.');return}
+ if(!job||!plan||!plan.clips.length){toast('Chưa có clip để duyệt. Hãy chọn video và dán JSON AI.',true);return}
+ const idx=all?plan.clips.map((_,i)=>i):Array.from(selectedRows).sort((a,b)=>a-b);
+ if(!idx.length){toast('Chưa chọn clip nào. Nhấn "Chọn tất cả", hoặc dùng "Duyệt tất cả".',true);return}
+ if(target&&idx.every(i=>plan.clips[i]?.approved)){toast('Cả '+idx.length+' clip này đã được duyệt rồi. Có thể nhấn CẮT CLIP.',false);return}
+ if(!target&&idx.every(i=>!plan.clips[i]?.approved)){toast('Các clip đã chọn chưa được duyệt, không có gì để bỏ.',true);return}
+ bulkBusy=true;
+ try{
+ let count=0;
+ for(let i of idx)if(plan.clips[i]&&plan.clips[i].approved!==target){plan.clips[i].approved=target;count++}
+ if(!count){toast('Không có clip nào thay đổi.',true);return}
+ dirty();renderAll();
+ // Persist and tell user the result. Do not claim it was saved before the API returns.
+ toast('Đang lưu trạng thái '+count+' clip…');
+ const saved=await savePlan(true);
+ if(saved)toast((target?'Đã duyệt ':'Đã bỏ duyệt ')+count+' clip và lưu thành công. '+(target?'Có thể nhấn CẮT CLIP ĐÃ DUYỆT.':''));
+ }finally{bulkBusy=false}
+}
+
+function renderAll(){renderClips();renderEditor();drawCanvases();$('viewRange').textContent=fmt(viewStart)+' – '+fmt(viewStart+viewSpan);$('zoomLabel').textContent=Math.round(viewSpan)+'s';if(!job){$('playerEmpty').style.display='block'}}
+function renderEditor(){onEdit()}
+function layout(canvas){let rect=canvas.getBoundingClientRect(),scale=window.devicePixelRatio||1,w=Math.max(200,Math.round(rect.width)),h=Math.max(35,Math.round(rect.height));let pixelW=Math.round(w*scale),pixelH=Math.round(h*scale);if(canvas.width!==pixelW||canvas.height!==pixelH){canvas.width=pixelW;canvas.height=pixelH}let ctx=canvas.getContext('2d');ctx.setTransform(scale,0,0,scale,0,0);return{ctx,w,h}}
+function rect(ctx,x,y,w,h,fill){ctx.fillStyle=fill;ctx.fillRect(x,y,w,h)}
+function ln(ctx,x,y1,y2,stroke,width=1){ctx.strokeStyle=stroke;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(x,y2);ctx.stroke()}
+function gridStep(span){let goal=span/7;return[1,2,5,10,15,30,60,120,300,600,1200,1800,3600].find(s=>s>=goal)||3600}
+// Single combined VIDEO + CLIP lane. Audio and laughter markers remain independent.
+const VIDEO_LANE_TOP=33, VIDEO_LANE_HEIGHT=94;
+const WAVE_LANE_TOP=132, WAVE_LANE_HEIGHT=59;
+const LAUGH_LANE_TOP=196, LAUGH_LANE_HEIGHT=22;
+function inVideoLane(y){return y>=VIDEO_LANE_TOP&&y<=VIDEO_LANE_TOP+VIDEO_LANE_HEIGHT}
+function drawTimeline(){
+ let {ctx,w,h}=layout(timeline);rect(ctx,0,0,w,h,'#0c1523');if(!duration)return;
+ let x=t=>(t-viewStart)/viewSpan*w, ranges=collect();
+ const videoY=VIDEO_LANE_TOP,videoH=VIDEO_LANE_HEIGHT,waveY=WAVE_LANE_TOP,waveH=WAVE_LANE_HEIGHT,laughY=LAUGH_LANE_TOP,laughH=LAUGH_LANE_HEIGHT;
+ // Ruler and timeline grid
+ let step=gridStep(viewSpan);ctx.font='11px ui-monospace,Consolas,monospace';ctx.textAlign='left';
+ for(let t=Math.ceil(viewStart/step)*step;t<=viewStart+viewSpan;t+=step){let px=x(t);ln(ctx,px,22,h-6,'#40526a');ctx.fillStyle='#a6b6ca';ctx.fillText(fmt(t),Math.min(w-70,px+4),15)}
+ // Cached filmstrip (decorative only; LIVE preview is decoded from the video stream)
+ rect(ctx,0,videoY,w,videoH,'#25364b');
+ let count=Math.min(16,Math.max(3,Math.round(w/95))),tileW=w/count;
+ for(let i=0;i<count;i++){
+   let t=clamp(viewStart+((i+.5)/count)*viewSpan,0,duration),key=thumbKey(t),cache=job.id+':'+key;
+   let image=thumbMap.get(cache);let xx=i*tileW;
+   if(image&&image.complete){
+     const areaW=tileW-2,areaH=videoH-2,iw=image.naturalWidth||180,ih=image.naturalHeight||102;
+     const scale=Math.min(areaW/iw,areaH/ih),tw=iw*scale,th=ih*scale;
+     ctx.drawImage(image,xx+1+(areaW-tw)/2,videoY+1+(areaH-th)/2,tw,th);
+   }else{rect(ctx,xx+1,videoY+1,tileW-2,videoH-2,i%2?'#1c2b3f':'#24374c');requestThumb(t)}
+   ln(ctx,xx,videoY,videoY+videoH,'#36475f');
+ }
+ // CLIP ranges are a visual overlay on the source thumbnails, NOT a second edit track.
+ // Their exact source-time coordinates and plan structure do not change.
+ for(let r of ranges){
+   const left=x(r.s),right=x(r.e);
+   if(right<=0||left>=w)continue;
+   const a=Math.max(0,left),b=Math.min(w,right),cw=b-a;
+   if(cw<1)continue;
+   const chosen=r.ci===selected.clip&&r.si===selected.seg,mergeChosen=mergeSelection.has(r.ci),isMerged=!!plan.clips[r.ci]?.merge_sources;
+   rect(ctx,a,videoY,cw,videoH,r.approved?'#137e5168':'#24629a70');
+   ctx.strokeStyle=mergeChosen?'#f9d270':chosen?'#ffe6a1':r.approved?'#4ade80':'#64b6ff';
+   ctx.lineWidth=mergeChosen?3:chosen?2.6:1.5;
+   ctx.strokeRect(a+1,videoY+1,Math.max(0,cw-2),videoH-2);
+   // Compact label on the same row as the video, leaving the thumbnails visible above.
+   if(cw>45){
+     ctx.save();ctx.beginPath();ctx.rect(a+2,videoY+1,Math.max(0,cw-4),videoH-2);ctx.clip();
+     rect(ctx,a+2,videoY+videoH-24,Math.min(cw-4,isMerged?210:107),22,chosen?'#324663df':'#11263acb');
+     ctx.fillStyle='#f4f8ff';ctx.font='bold 11px system-ui';
+     ctx.fillText(isMerged?'🔗 '+plan.clips[r.ci].title.slice(0,23):'CLIP '+String(r.ci+1).padStart(2,'0')+(r.approved?' ✓':''),a+9,videoY+videoH-9);
+     ctx.restore();
+   }
+   // Edge grabbers are part of this VIDEO lane. Selected clip gets larger grips.
+   for(let edgeX of [left,right]){
+     if(edgeX<0||edgeX>w)continue;
+     const width=chosen?9:4;
+     rect(ctx,edgeX-width/2,videoY+3,width,videoH-6,chosen?'#ecf2ff':r.approved?'#69e5a1':'#83c5fb');
+     if(chosen)for(let j=-1;j<=1;j++)ln(ctx,edgeX+j*2.5,videoY+videoH/2-9,videoY+videoH/2+9,'#406080',1);
+   }
+ }
+ ctx.fillStyle='#fff';ctx.font='bold 11px system-ui';
+ // Label only on an uncovered portion to avoid obscuring a clip title.
+ if(!ranges.some(r=>r.s<=viewStart&&r.e>viewStart))ctx.fillText('VIDEO MP4',8,videoY+15);
+ // Actual PCM peak envelope, recomputed server-side only once per source video.
+ rect(ctx,0,waveY,w,waveH,'#102738');
+ if(waveOn&&waveform?.peaks?.length){
+   let vals=waveform.peaks,interval=waveform.interval,center=waveY+waveH/2;
+   for(let px=0;px<w;px+=2){
+     let i0=Math.max(0,Math.floor((viewStart+px/w*viewSpan)/interval));
+     let i1=Math.min(vals.length,Math.ceil((viewStart+(px+2)/w*viewSpan)/interval));
+     let peak=0;for(let i=i0;i<i1;i++)if(vals[i]>peak)peak=vals[i];
+     let bar=Math.max(1,peak*(waveH-8));rect(ctx,px,center-bar/2,1.5,bar,'#55c9d7');
+   }
+ }else{ctx.fillStyle='#587b9c';ctx.font='11px system-ui';ctx.fillText(waveOn?'ĐANG TẠO SÓNG ÂM…':'SÓNG ÂM ĐANG TẮT',8,waveY+23)}
+ rect(ctx,0,laughY,w,laughH,'#1b2839');
+ for(let r of job?.laughs||[]){if(r.end<viewStart||r.start>viewStart+viewSpan)continue;let a=Math.max(0,x(r.start)),b=Math.min(w,x(r.end));rect(ctx,a,laughY+5,Math.max(2,b-a),13,'#eab54b')}
+ ctx.fillStyle='#e6bb71';ctx.font='bold 11px system-ui';ctx.fillText('LAUGHS CSV',8,laughY+16);
+ if(snapGuide!==null){let px=x(snapGuide);if(px>=0&&px<=w){ln(ctx,px,18,h-2,'#fbbf24',2);ctx.fillStyle='#fbbf24';ctx.fillText('SNAP '+fmt(snapGuide,true),Math.max(0,Math.min(w-145,px+8)),h-4)}}
+ let pt=player.currentTime||0,px=x(pt);
+ if(px>=0&&px<=w){ln(ctx,px,20,h-8,'#fb827b',2);ctx.fillStyle='#fb827b';ctx.beginPath();ctx.moveTo(px-6,20);ctx.lineTo(px+6,20);ctx.lineTo(px,29);ctx.fill()}
+ if(hoverAt!==null){let hoverX=x(hoverAt);if(hoverX>=0&&hoverX<=w){ln(ctx,hoverX,21,h-9,'#fff7a1',1);ctx.fillStyle='#fff7a1';ctx.font='11px Consolas,monospace';let lab=fmt(hoverAt,true);rect(ctx,Math.min(w-98,Math.max(0,hoverX-45)),h-18,96,17,'#1b324d');ctx.fillStyle='#fff7a1';ctx.fillText(lab,Math.min(w-95,Math.max(3,hoverX-42)),h-6)}}
+}
+function drawOverview(){let{ctx,w,h}=layout(overview);rect(ctx,0,0,w,h,'#111e2e');if(!duration)return;let x=t=>t/duration*w;for(let r of job?.laughs||[]){let xx=x(r.start);rect(ctx,xx,4,Math.max(1.3,x(r.end)-xx),10,'#d69e38')}for(let p of collect()){rect(ctx,x(p.s),18,Math.max(1,x(p.e)-x(p.s)),17,p.approved?'#30ae72':'#447eb9')}let left=x(viewStart),right=x(Math.min(duration,viewStart+viewSpan));ctx.strokeStyle='#e7eef8';ctx.lineWidth=1.8;ctx.strokeRect(left+.5,1.5,Math.max(1,right-left-1),h-3);ctx.fillStyle='#acc1d9';ctx.font='10px system-ui';ctx.fillText('FULL VIDEO',5,h-3)}
+function drawCanvases(){drawTimeline();drawOverview();$('viewRange').textContent=fmt(viewStart)+' – '+fmt(viewStart+viewSpan);$('zoomLabel').textContent=Math.round(viewSpan)+'s'}
+const coord=(evt,canvas)=>evt.clientX-canvas.getBoundingClientRect().left;
+function pointerTime(evt){return clamp(viewStart+coord(evt,timeline)/timeline.getBoundingClientRect().width*viewSpan,0,duration)}
+function handleHit(x){let width=timeline.getBoundingClientRect().width;let hits=[];for(let r of collect()){for(let edge of [0,1]){let px=((edge?r.e:r.s)-viewStart)/viewSpan*width;if(Math.abs(x-px)<=11)hits.push({...r,edge,dist:Math.abs(x-px)})}}hits.sort((a,b)=>a.dist-b.dist);return hits[0]||null}
+function moveSegment(ci,si,dt){
+ let seg=plan.clips[ci].segments[si],length=seg[1]-seg[0];let st=clamp(Math.round((seg[0]+dt)*1000)/1000,0,Math.max(0,duration-length)),en=st+length;
+ for(let r of collect()){if(r.ci===ci&&r.si===si)continue;if(st<r.e-.001&&en>r.s+.001)return false}
+ seg[0]=st;seg[1]=en;dirty();return true;
+}
+// Snapping: pixel-distance hysteresis, active on clip start/end; Alt disables temporarily.
+function nearestSnap(value,evt){
+ if(!snapOn||evt?.altKey||!duration){snapGuide=null;return value}
+ const pxSec=viewSpan/Math.max(1,timeline.getBoundingClientRect().width);
+ let candidates=[player.currentTime||0,0,duration];
+ for(let r of collect())if(!drag||r.ci!==drag.ci||r.si!==drag.si)candidates.push(r.s,r.e);
+ let best=null,diff=Infinity;
+ for(let v of candidates){let d=Math.abs(v-value);if(d<diff){best=v;diff=d}}
+ const threshold=drag?.snap===best?17:10;
+ if(best!==null&&diff<=threshold*pxSec){snapGuide=best;if(drag)drag.snap=best;return best}
+ snapGuide=null;if(drag)drag.snap=null;return value;
+}
+function applyScrubUnderPointer(evt){
+ const y=evt.clientY-timeline.getBoundingClientRect().top;
+ if(y<0||y>timeline.getBoundingClientRect().height){scrubHide();return}
+ let t=pointerTime(evt);
+ if(player.paused){hoverAt=t;scrubRequest(t)}
+ else{hoverAt=null;scrubHide()}
+ drawSoon();
+}
+timeline.addEventListener('pointerdown',evt=>{
+ if(evt.button!==0||!job||!duration)return;
+ evt.preventDefault();
+ const px=coord(evt,timeline),y=evt.clientY-timeline.getBoundingClientRect().top,t=pointerTime(evt);
+ timeline.setPointerCapture(evt.pointerId);timeline.classList.add('dragging');
+ if(player.paused){hoverAt=t;scrubRequest(t)}else{hoverAt=null;scrubHide()}
+ snapGuide=null;
+ if(plan&&inVideoLane(y)){
+   if(evt.ctrlKey||evt.metaKey){const clip=collect().find(r=>r.s<=t&&t<=r.e)||handleHit(px);if(clip){toggleMergeSelection(clip.ci,clip.si);drag={mode:'multi'};return}}
+   let handle=handleHit(px);
+   if(handle){pick(handle.ci,handle.si,false,true);drag={ci:handle.ci,si:handle.si,edge:handle.edge,mode:'edge',snap:null,lastGood:handle.edge?handle.e:handle.s};return}
+   let clip=collect().find(r=>r.s<=t&&t<=r.e);
+   if(clip){pick(clip.ci,clip.si,false,true);drag={ci:clip.ci,si:clip.si,mode:'move',last:t,originX:evt.clientX,started:false};return}
+ }
+ // Drag blank area to PAN. A short click (no displacement) positions the real playhead.
+ drag={mode:evt.ctrlKey||evt.metaKey?'multi':'pan',originX:evt.clientX,originStart:viewStart,moved:false};
+});
+timeline.addEventListener('pointermove',evt=>{
+ if(!job||!duration)return;
+ let t=pointerTime(evt);
+ if(!drag){
+   const y=evt.clientY-timeline.getBoundingClientRect().top;
+   timeline.style.cursor=inVideoLane(y)&&handleHit(coord(evt,timeline))?'ew-resize':
+     inVideoLane(y)&&collect().some(r=>r.s<=t&&t<=r.e)?'move':'grab';
+ }
+ if(drag){
+   if(drag.mode==='pan'){
+     const delta=evt.clientX-drag.originX;
+     if(Math.abs(delta)>3)drag.moved=true;
+     if(drag.moved){viewStart=clamp(drag.originStart-delta/timeline.getBoundingClientRect().width*viewSpan,0,Math.max(0,duration-viewSpan));t=pointerTime(evt)}
+   }else if(drag.mode==='edge'){
+     let snapped=nearestSnap(t,evt),ok=validateChange(drag.ci,drag.si,drag.edge,snapped,true);
+     if(!ok&&snapped!==t){snapGuide=null;ok=validateChange(drag.ci,drag.si,drag.edge,t,true)}
+     if(ok){let seg=plan.clips[drag.ci].segments[drag.si];drag.lastGood=seg[drag.edge];$('startInput').value=fmt(seg[0],true);$('endInput').value=fmt(seg[1],true);t=seg[drag.edge]}
+   }else if(drag.mode==='move'){
+     // A click on a clip selects it; a deliberate drag moves it, never a mouse-down jitter.
+     if(!drag.started&&Math.abs(evt.clientX-drag.originX)>=6){drag.started=true;drag.last=t}
+     if(drag.started&&moveSegment(drag.ci,drag.si,t-drag.last)){drag.last=t;let seg=plan.clips[drag.ci].segments[drag.si];$('startInput').value=fmt(seg[0],true);$('endInput').value=fmt(seg[1],true)}
+   }
+ }
+ if(player.paused){hoverAt=t;scrubRequest(t)}else{hoverAt=null;scrubHide()}
+ drawSoon();
+});
+timeline.addEventListener('pointerleave',()=>{timeline.style.cursor='';if(!drag){hoverAt=null;scrubHide();drawSoon()}});
+function finishDrag(evt){
+ if(!drag)return;
+ const d=drag;drag=null;timeline.style.cursor='';timeline.classList.remove('dragging');snapGuide=null;
+ if(d.mode==='pan'&&!d.moved){playingSelection=null;seekPreview(pointerTime(evt),true)}
+ if(d.mode==='edge'||d.mode==='move'){
+   // Do not move the red playhead on trim release: it is the snap anchor the editor intentionally set.
+   // The secondary scrub decoder handled the live preview during the drag.
+   renderAll();if(changed)scheduleSave();
+ }
+ if(evt.type==='pointercancel')scrubHide();
+ else if(evt.clientY<timeline.getBoundingClientRect().top||evt.clientY>timeline.getBoundingClientRect().bottom){scrubHide();hoverAt=null}
+ drawSoon();
+}
+for(const ev of ['pointerup','pointercancel','lostpointercapture'])timeline.addEventListener(ev,finishDrag);
+$('snapToggle').onclick=()=>{snapOn=!snapOn;$('snapToggle').classList.toggle('is-on',snapOn);$('snapToggle').textContent='🧲 Nam châm: '+(snapOn?'BẬT':'TẮT');snapGuide=null;drawSoon()};
+$('waveToggle').onclick=()=>{waveOn=!waveOn;$('waveToggle').classList.toggle('is-on',waveOn);$('waveToggle').textContent='〰 Sóng âm: '+(waveOn?'BẬT':'TẮT');drawSoon()};
+timeline.addEventListener('wheel',e=>{if(!duration)return;e.preventDefault();if(e.ctrlKey||e.metaKey){let t=pointerTime(e);viewSpan=clamp(viewSpan*(e.deltaY>0?1.2:1/1.2),Math.min(3,duration),duration);viewStart=clamp(t-(coord(e,timeline)/timeline.getBoundingClientRect().width)*viewSpan,0,Math.max(0,duration-viewSpan))}else{viewStart=clamp(viewStart+Math.sign(e.deltaY||e.deltaX)*Math.max(2,viewSpan*.17),0,Math.max(0,duration-viewSpan))}drawSoon()},{passive:false});
+overview.addEventListener('pointerdown',evt=>{if(!duration)return;let t=clamp(coord(evt,overview)/overview.getBoundingClientRect().width*duration,0,duration);centerAt(t)});
+function setZoom(mult){if(!duration)return;let mid=viewStart+viewSpan/2;viewSpan=clamp(viewSpan*mult,Math.min(3,duration),duration);centerAt(mid);drawCanvases()}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>savePlan(true),1300)}
+async function savePlan(silent=false){
+ // Prevent parallel autosaves from opening the same finished job twice.
+ if(saveOperation)return await saveOperation;
+ const op=savePlanCore(silent);saveOperation=op;
+ try{return await op}finally{if(saveOperation===op)saveOperation=null}
+}
+async function savePlanCore(silent=false){
+ clearTimeout(saveTimer);if(!changed||!job||!plan){if(!silent)toast('✓ Mốc đã lưu, không có thay đổi mới.');return true;}
+ if(savingPromise){try{await savingPromise}catch(e){}if(!changed)return true}
+ const id=job.id,revision=editRevision,snapshot=JSON.parse(JSON.stringify(plan.clips));
+ saveIndicator('Đang lưu các thay đổi…','working');savingPromise=req('/api/save-plan',{id,clips:snapshot});
+ try{await savingPromise;
+   if(job?.id===id){if(editRevision===revision){changed=false;saveIndicator('✓ Đã lưu mốc chỉnh','saved')}else{saveIndicator('Có thay đổi mới, đang lưu tiếp…','working');scheduleSave()}}
+   if(!silent)toast('✓ Đã lưu mốc chỉnh và clip sẽ xuất');return true;
+ }catch(err){
+   saveIndicator('⚠ LƯU CHƯA THÀNH CÔNG — bấm Lưu ngay để thử lại','error');toast('Chưa lưu được: '+err.message+'. Mốc vẫn còn trên màn hình, chưa đóng trang nhé.',true);return false;
+ }finally{savingPromise=null}
+}
+async function renderNow(){
+ if(!job||!plan||!plan.clips.length){toast('Chưa có clip. Hãy chọn video và dán mốc từ ChatGPT trước.',true);return}
+ if(rendering||job.status==='CUTTING'){toast('Video này đang được xuất. Vẫn có thể tiếp tục chỉnh cho lượt sau.',true);return}
+ let approved=plan.clips.filter(c=>c.approved);
+ if(!approved.length){toast('Chưa có clip được duyệt. Nhấn “Duyệt tất cả” nếu muốn xuất toàn bộ.',true);return}
+ if(!(await savePlan(true)))return;
+ const count=approved.length, previous=!!job.has_previous_export;
+ $('confirmTitle').textContent=previous?'Video này đã xuất trước đó':'Bạn muốn xuất video ngay bây giờ?';
+ $('confirmText').textContent=previous?
+  `Bạn đã xuất video này một lần rồi.\n\nBạn đang chuẩn bị xuất lại ${count} clip đã duyệt với mốc thời gian hiện tại. Bạn muốn thay bản đã xuất bằng bản mới không?`:
+  `Studio sẽ cắt ${count} clip đã duyệt theo mốc hiện tại.\n\nVideo MP4 gốc vẫn được giữ nguyên.`;
+ $('confirmOld').style.display=previous?'block':'none';
+ $('confirmExport').textContent=previous?'✓ THAY BẰNG BẢN MỚI':'✓ BẮT ĐẦU XUẤT';
+ $('exportModal').style.display='flex';
+}
+async function commitExport(){
+ if(exportBusy||!job)return;
+ const prev=!!job.has_previous_export,id=job.id;
+ exportBusy=true;$('confirmExport').disabled=true;$('confirmExport').textContent='Đang bắt đầu…';
+ try{
+  const r=await req('/api/render',{id,replace_existing:prev});
+  $('exportModal').style.display='none';rendering=true;job.status='CUTTING';
+  toast(r.message||'Đang xuất clip');renderAll();refreshJobs();
+ }catch(err){toast('Không xuất được: '+err.message,true)}
+ finally{exportBusy=false;$('confirmExport').disabled=false;}
+}
+async function toggleApprove(){let p=sel();if(!p){toast('Chọn clip trước',true);return}
+ p.clip.approved=!p.clip.approved;dirty();renderAll();toast('Đang lưu trạng thái clip…');
+ if(await savePlan(true))toast('Đã '+(p.clip.approved?'duyệt':'bỏ duyệt')+' clip '+(p.ci+1));
+}
+function newClip(){if(!job||!plan)return;let t=clamp(player.currentTime||viewStart+viewSpan/2,0,duration);let ranges=collect();let prev=0,next=duration;for(let r of ranges){if(t>=r.s&&t<r.e){toast('Playhead đang nằm trong clip khác. Hãy chọn vùng trống.',true);return}if(r.e<=t)prev=Math.max(prev,r.e);if(r.s>=t)next=Math.min(next,r.s)}t=Math.max(t,prev);let e=Math.min(t+15,next,duration);if(e-t<.2){toast('Khoảng trống còn lại quá ngắn',true);return}let id='manual_'+Date.now();let n=plan.clips.length+1;plan.clips.push({id,title:'[MANUAL] Highlight '+n,approved:false,segments:[[+t.toFixed(3),+e.toFixed(3)]]});selected={clip:plan.clips.length-1,seg:0};dirty();centerAt((t+e)/2);renderAll();scheduleSave()}
+function deleteClip(){let p=sel();if(!p)return;if(!confirm('Xóa '+p.clip.title+' khỏi bản chọn? Video gốc không bị xóa.'))return;plan.clips.splice(p.ci,1);selectedRows=new Set([...selectedRows].filter(i=>i!==p.ci).map(i=>i>p.ci?i-1:i));selected={clip:Math.max(0,p.ci-1),seg:0};dirty();renderAll();scheduleSave()}
+function playMarked(){let p=sel();if(!p){toast('Chọn clip trước',true);return}playingSelection={ci:p.ci,idx:0};let s=p.clip.segments[0][0];player.currentTime=s;player.play().catch(()=>toast('Không play được định dạng video này trong trình duyệt',true))}
+player.addEventListener('play',()=>{hideHover();scrubHide();hoverAt=null;drawSoon()});player.addEventListener('timeupdate',()=>{let now=player.currentTime||0;$('playerTime').textContent=fmt(now,true)+' / '+fmt(duration);if(playingSelection){let c=plan?.clips[playingSelection.ci];if(!c){playingSelection=null;return}let i=playingSelection.idx,r=c.segments[i];if(now>=r[1]-.06){if(i<c.segments.length-1){playingSelection.idx=i+1;player.currentTime=c.segments[i+1][0]}else{player.pause();playingSelection=null}}}drawCanvases()});player.addEventListener('seeking',()=>{drawCanvases()});player.addEventListener('pause',()=>{if(playingSelection&&player.ended)playingSelection=null});player.addEventListener('error',()=>{if(job)toast('Không phát được codec hiện tại. Thử video MP4/H.264 (FFmpeg vẫn có thể cắt).',true)});
+$('playSelection').onclick=playMarked;$('back5').onclick=()=>{player.currentTime=clamp(player.currentTime-5,0,duration);playingSelection=null};$('forward5').onclick=()=>{player.currentTime=clamp(player.currentTime+5,0,duration);playingSelection=null};$('zoomOut').onclick=()=>setZoom(1.6);$('zoomIn').onclick=()=>setZoom(.625);$('fitClip').onclick=()=>{let p=sel();if(!p)return;let all=p.clip.segments;viewSpan=clamp((all.at(-1)[1]-all[0][0])*1.3,Math.min(6,duration),duration);centerAt((all[0][0]+all.at(-1)[1])/2)};
+$('startInput').addEventListener('change',()=>applyInput(0));$('endInput').addEventListener('change',()=>applyInput(1));$('clipTitle').addEventListener('change',e=>{let p=sel();if(!p)return;let title=e.target.value.trim();if(!title){toast('Tên clip không được trống',true);return}p.clip.title=title;dirty();renderAll();scheduleSave()});document.querySelectorAll('[data-change]').forEach(b=>b.onclick=()=>shiftTime(b.dataset.change==='start'?0:1,Number(b.dataset.amount)));
+$('prevSeg').onclick=()=>{if(sel()&&selected.seg>0)pick(selected.clip,selected.seg-1,true)};$('nextSeg').onclick=()=>{if(sel()&&selected.seg<sel().clip.segments.length-1)pick(selected.clip,selected.seg+1,true)};
+$('prevClip').onclick=()=>{if(sel()&&selected.clip>0)pick(selected.clip-1,0,true)};$('nextClip').onclick=()=>{if(sel()&&selected.clip<plan.clips.length-1)pick(selected.clip+1,0,true)};
+$('selectAllClips').onchange=e=>selectAllClips(e.target.checked);
+$('approveSelected').onclick=()=>bulkApprove(true);$('unapproveSelected').onclick=()=>bulkApprove(false);$('approveAll').onclick=()=>bulkApprove(true,true);$('clearSelected').onclick=()=>selectAllClips(false);
+$('approveClip').onclick=toggleApprove;$('deleteClip').onclick=deleteClip;$('addManual').onclick=newClip;$('savePlan').onclick=()=>savePlan(false);$('renderNow').onclick=renderNow;$('cancelExport').onclick=()=>{$('exportModal').style.display='none';toast('Đã hủy xuất. Các mốc vừa sửa vẫn giữ nguyên.')};$('confirmExport').onclick=commitExport;
+$('importAI').onclick=async()=>{if(!job)return toast('Chọn video trước',true);clearTimeout(saveTimer);if(savingPromise)try{await savingPromise}catch(e){};if(plan?.clips?.length&&!confirm('Áp mốc AI mới sẽ thay mốc chỉnh tay cũ. Tiếp tục?'))return;try{let response=await req('/api/import-ai',{id:job.id,text:$('aiInput').value});plan=response.plan;selected={clip:0,seg:0};selectedRows.clear();mergeSelection.clear();changed=false;saveIndicator('✓ Đã lưu danh sách clip từ AI','saved');if(plan.clips.length){let p=plan.clips[0].segments[0];viewSpan=Math.min(duration,90);centerAt((p[0]+p[1])/2);player.currentTime=p[0]}renderAll();toast('✓ Đã nhập '+plan.clips.length+' clip. Có thể kéo chỉnh hoặc bấm Duyệt tất cả rồi Xuất video.')}catch(err){toast('Không nhập được: '+err.message,true)}};
+$('openJob').onclick=()=>job&&req('/api/open',{id:job.id,what:'job'}).catch(e=>toast(e.message,true));$('openDone').onclick=()=>job&&req('/api/open',{id:job.id,what:'done'}).catch(e=>toast(e.message,true));$('openInput').onclick=()=>req('/api/open-input',{}).catch(e=>toast(e.message,true));
+$('refreshAll').onclick=refreshJobs;document.querySelector('details').addEventListener('toggle',async e=>{if(e.target.open){try{let data=await req('/api/log?which=detect');$('detectLog').textContent=data.log}catch(err){toast(err.message,true)}}});
+document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;if(e.altKey&&!e.ctrlKey&&!e.metaKey&&e.code==='KeyG'){e.preventDefault();mergeOrUnmerge();return}if(e.code==='Space'){e.preventDefault();player.paused?player.play():player.pause();playingSelection=null}else if(e.key==='ArrowLeft'){player.currentTime=Math.max(0,player.currentTime-1)}else if(e.key==='ArrowRight'){player.currentTime=Math.min(duration,player.currentTime+1)}});
+window.addEventListener('resize',drawCanvases);setInterval(refreshJobs,4500);refreshJobs();renderAll();
+</script>
+</body>
+</html>

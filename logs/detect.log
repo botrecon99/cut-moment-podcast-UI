@@ -1,0 +1,67 @@
+[10:54:52] Detection worker started (Python 3.7.9)
+[10:55:00] Detection worker started (Python 3.7.9)
+[12:02:19] Detection worker started (Python 3.7.9)
+[15:47:08] Detection worker started (Python 3.7.9)
+[15:52:45] Detector working directory: F:\test tool cho nhân viên\LaughDetectionV2
+[15:53:26] Loading local laughter model (threshold 0.9)
+Using TensorFlow backend.
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:74: The name tf.get_default_graph is deprecated. Please use tf.compat.v1.get_default_graph instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:517: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:133: The name tf.placeholder_with_default is deprecated. Please use tf.compat.v1.placeholder_with_default instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:3445: calling dropout (from tensorflow.python.ops.nn_ops) with keep_prob is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `rate` instead of `keep_prob`. Rate should be set to `rate = 1 - keep_prob`.
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:4138: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:174: The name tf.get_default_session is deprecated. Please use tf.compat.v1.get_default_session instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:181: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:186: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2026-10-16 15:53:27.825649: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:190: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:199: The name tf.is_variable_initialized is deprecated. Please use tf.compat.v1.is_variable_initialized instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:206: The name tf.variables_initializer is deprecated. Please use tf.compat.v1.variables_initializer instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\optimizers.py:790: The name tf.train.Optimizer is deprecated. Please use tf.compat.v1.train.Optimizer instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:3376: The name tf.log is deprecated. Please use tf.math.log instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\tensorflow_core\python\ops\nn_impl.py:183: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:986: The name tf.assign_add is deprecated. Please use tf.compat.v1.assign_add instead.
+
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\backend\tensorflow_backend.py:973: The name tf.assign is deprecated. Please use tf.compat.v1.assign instead.
+
+F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\keras\engine\saving.py:327: UserWarning: Error in loading the saved optimizer state. As a result, your model is starting with a freshly initialized optimizer.
+  warnings.warn('Error in loading the saved optimizer '
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\tf_slim\layers\layers.py:1089: Layer.apply (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use `layer.__call__` method instead.
+WARNING:tensorflow:From F:\test tool cho nhân viên\LaughDetectionV2\_python37\lib\site-packages\tf_slim\layers\layers.py:1666: flatten (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.flatten instead.
+[15:53:31] Model loaded once. Detector watching job queue.
+[15:53:31] ANALYZING: The Doctor   The Church of What's Happening Now
+Analyzing video.mp4: 01:18:36, 1573 windows
+Found 0 laughter candidate events. CSVs saved to F:\test tool cho nhân viên\LaughDetectionV2\jobs\LOCAL_0342798e1b1fc
+No events passed the threshold. This does not prove the video is unfunny.
+[15:54:58] CSV READY: The Doctor   The Church of What's Happening Now (job LOCAL_0342798e1b1fc)
+[16:27:06] ANALYZING: Bobby Is Tone Tone Galore   Ep 341   Bad Friends
+Analyzing video.mp4: 01:06:29, 1330 windows
+Found 26 laughter candidate events. CSVs saved to F:\test tool cho nhân viên\LaughDetectionV2\jobs\LOCAL_1bd9ac151afcb
+[16:28:15] CSV READY: Bobby Is Tone Tone Galore   Ep 341   Bad Friends (job LOCAL_1bd9ac151afcb)
+[16:45:50] Detection worker started (Python 3.7.9)
+[17:05:20] Detection worker started (Python 3.7.9)
+[08:17:20] Detection worker started (Python 3.7.9)
+[08:28:47] Detection worker started (Python 3.7.9)
+[08:34:30] Detection worker started (Python 3.7.9)
+[08:46:25] Detection worker started (Python 3.7.9)
+[11:27:36] Detection worker started (Python 3.7.9)

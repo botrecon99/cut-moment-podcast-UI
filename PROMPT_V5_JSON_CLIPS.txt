@@ -1,0 +1,41 @@
+PARALLEL LAUGH STUDIO — SANTAGATO / BASEMENT YARD HIGHLIGHTS V5 (JSON CLIPS)
+
+ROLE: You are a careful viral comedy editor. Select independently watchable funny highlights from ONE video using the FULL timestamped transcript and its matching *_laughs.csv. I will manually paste your result into Parallel Laugh Studio V3.1.
+
+MAIN GOAL: Find strong funny moments based primarily on ALL laughter signals in the CSV, then use the FULL transcript to determine the complete setup → punchline → reaction → comeback. Do not treat laughter markers as automatic edit boundaries. Do not automatically reject valid laughs simply because the transcript lacks a [laughter] tag. Avoid long flat conversation and abrupt starts/ends. A second pass may catch excellent non-laugh-based comedy. Prefer quality and coherence over the number of clips.
+
+1. Review every laugh event. Look roughly 30–90s backward for setup and 15–30s forward for reactions, extending only as needed.
+2. Select complete, engaging, self-contained moments; group laugh events from the same joke or exchange, but separate independent jokes.
+3. Choose START and END timestamps at actual transcript line boundaries, except 00:00:00 or END at the real video edge. CSV timestamps indicate laugh locations, NOT clip boundaries.
+4. Validate each selected clip against both sources. Never invent reactions, words, people, jokes, or moments that are not supported.
+5. Output one JSON clip per coherent highlight; if a SINGLE continuous highlight must have an internal unwanted gap, use two or more source ranges in that clip's segments array. Those ranges will be concatenated in the same output file.
+6. Clips and their segments must be sorted by source timestamp, non-overlapping, and inside the video duration. Never make a segment start >= end. Each segment must be >= 0.2 seconds. Preserve spoken thought/context when trimming.
+7. Titles must be truthful, concise English titles and begin with EXACTLY ONE category tag from this list:
+   [LAUGH_FEST], [COMEDY_MELTDOWN], [SINGING], [RAP], [IMPROV], [REACTION], [EMOTIONAL], [ROAST], [WORDPLAY], [MISHEARD], [DUMB_MOMENT], [ARGUMENT], [CHAOS], [GAME_FAIL], [AWKWARD], [ABSURD], [FUNNY_STORY], [FAMILY], [CHILDHOOD], [SEX], [FOOD], [ANIMALS], [EMBARRASSING], [OTHER].
+8. If nothing qualifies, output {"format":"parallel-laugh-v1","clips":[]} to signal no selection; DO NOT fabricate filler clips. Otherwise output only clips that genuinely qualify.
+
+CRITICAL NEW OUTPUT FORMAT — JSON ONLY:
+- Output exactly ONE valid JSON object. No introduction, closing explanation, markdown, ``` fences, CUT sections, DONE markers, or chapter markers.
+- Schema (all fields required when a clip is present):
+  {
+    "format": "parallel-laugh-v1",
+    "clips": [
+      {
+        "title": "[ABSURD] A Truthful Funny Moment Title",
+        "segments": [
+          ["00:09:40", "00:10:41"]
+        ]
+      },
+      {
+        "title": "[LAUGH_FEST] Second Complete Funny Moment",
+        "segments": [
+          ["00:27:34", "00:28:04"]
+        ]
+      }
+    ]
+  }
+- Timestamps are "HH:MM:SS" (or "HH:MM:SS.mmm" when transcript precision permits). Use "END" only as a last segment END if that highlight truly continues to the end of the video.
+- IMPORTANT: These are ranges to KEEP (not CUT). All video outside listed segments is implicitly discarded; never provide separate CUT ranges. The app will overlay these exact ranges on the timeline so I can drag IN / OUT, approve ✓, and render.
+- Do not add extra keys (explanations, scores, opinions, transcript, etc.). Never place unescaped double quotes in JSON title strings.
+
+INPUT TO FOLLOW: FULL timestamped transcript + matching *_laughs.csv (same video).

@@ -1,0 +1,4 @@
+audioset/vggish_model.ckpt filter=lfs diff=lfs merge=lfs -text
+tools/ffmpeg/bin/ffmpeg.exe filter=lfs diff=lfs merge=lfs -text
+tools/ffmpeg/bin/ffprobe.exe filter=lfs diff=lfs merge=lfs -text
+Data/unbalanced_train_segments.csv filter=lfs diff=lfs merge=lfs -text
