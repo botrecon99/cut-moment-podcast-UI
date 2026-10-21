@@ -7,3 +7,13 @@
 
 # Python bytecode caches (including nested packages)
 __pycache__/
+
+# Local license state + secrets (never commit)
+/.license/
+/_license_predeploy_backup/
+/license_cloudflare/.wrangler/
+/license_cloudflare/node_modules/
+/license_cloudflare/.dev.vars*
+/cookies.txt
+/.env
+/.env.*

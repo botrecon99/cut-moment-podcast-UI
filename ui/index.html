@@ -59,7 +59,7 @@ button,input,textarea{font:inherit}button{color:inherit;cursor:pointer;border:1p
 <body>
 <header>
   <div class="brand"><div class="logo">✂</div><div>PARALLEL LAUGH STUDIO <span class="tag good">V3.7.4</span><sub>THÊM VIDEO → SỬA CLIP → XUẤT VIDEO</sub></div></div>
-  <div class="row"><span class="tag good" id="detectorState">● Detector riêng</span><span class="tag wait">● Local / Không tải video lại</span><button id="refreshAll" title="Cập nhật danh sách">⟳ Làm mới</button></div>
+  <div class="row"><span class="tag good" id="licenseState" title="Trạng thái bản quyền">🔑 License</span><span class="tag good" id="detectorState">● Detector riêng</span><span class="tag wait">● Local / Không tải video lại</span><button id="refreshAll" title="Cập nhật danh sách">⟳ Làm mới</button></div>
 </header>
 <div class="body">
   <aside class="sidebar">
@@ -749,7 +749,17 @@ $('importAI').onclick=async()=>{if(!job)return toast('Chọn video trước',tru
 $('openJob').onclick=()=>job&&req('/api/open',{id:job.id,what:'job'}).catch(e=>toast(e.message,true));$('openDone').onclick=()=>job&&req('/api/open',{id:job.id,what:'done'}).catch(e=>toast(e.message,true));$('openInput').onclick=()=>req('/api/open-input',{}).catch(e=>toast(e.message,true));
 $('refreshAll').onclick=refreshJobs;document.querySelector('details').addEventListener('toggle',async e=>{if(e.target.open){try{let data=await req('/api/log?which=detect');$('detectLog').textContent=data.log}catch(err){toast(err.message,true)}}});
 document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))return;if(e.altKey&&!e.ctrlKey&&!e.metaKey&&e.code==='KeyG'){e.preventDefault();mergeOrUnmerge();return}if(e.code==='Space'){e.preventDefault();player.paused?player.play():player.pause();playingSelection=null}else if(e.key==='ArrowLeft'){player.currentTime=Math.max(0,player.currentTime-1)}else if(e.key==='ArrowRight'){player.currentTime=Math.min(duration,player.currentTime+1)}});
-window.addEventListener('resize',drawCanvases);setInterval(refreshJobs,4500);refreshJobs();renderAll();
+async function updateLicenseBadge(){
+ try{
+  let r=await fetch('/api/license-status',{cache:'no-store'}),d=await r.json();
+  if(!d.valid){window.location.replace('/');return}
+  let badge=$('licenseState');let days=Math.max(0,Math.ceil((d.expires_at*1000-Date.now())/86400000));
+  badge.textContent='🔑 '+(d.offline?'Offline · ':'')+'Còn '+days+' ngày';
+  badge.title='License đến '+new Date(d.expires_at*1000).toLocaleString('vi-VN');
+  badge.className='tag '+(days<=3?'busy':'good');
+ }catch(e){}
+}
+window.addEventListener('resize',drawCanvases);setInterval(refreshJobs,4500);setInterval(updateLicenseBadge,30000);updateLicenseBadge();refreshJobs();renderAll();
 </script>
 </body>
 </html>

@@ -19,6 +19,8 @@ import threading
 import uuid
 import traceback
 import webbrowser
+import time
+from license_client import LicenseClient
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -31,6 +33,10 @@ from subtitle_youtube import parse_youtube_id, source_for_job, list_languages, f
 HOST = '127.0.0.1'
 PORT = 8765
 HTML = ROOT / 'ui' / 'index.html'
+LICENSE_HTML = ROOT / 'ui' / 'license.html'
+LICENSE = LicenseClient()
+WORKERS_LOCK = threading.RLock()
+WORKERS_ENABLED = False
 ACTIVE_RENDERS = set()
 RENDER_LOCK = threading.RLock()
 RENDER_EXEC_LOCK = threading.Lock()  # cutter.py uses global working paths; render one job at a time
@@ -580,6 +586,36 @@ def _render_approved_locked(folder, meta, cfg, clips_snapshot, replace_existing)
             ACTIVE_RENDERS.discard(folder.name)
 
 
+
+
+def reconcile_license_workers(valid):
+    """Start ingest/detect only while the Studio license is currently allowed."""
+    global WORKERS_ENABLED
+    with WORKERS_LOCK:
+        if valid and not WORKERS_ENABLED:
+            launch_workers(config())
+            WORKERS_ENABLED = True
+        elif not valid and WORKERS_ENABLED:
+            close_workers()
+            WORKERS.clear()
+            WORKERS_ENABLED = False
+
+
+def license_status(force=False):
+    result = LICENSE.status(force=force)
+    reconcile_license_workers(result.get('valid', False))
+    return result
+
+
+def license_watch():
+    # Also stop workers when the browser is closed or unattended.
+    while True:
+        try:
+            license_status()
+        except Exception as exc:
+            print('[License] Error:', exc)
+        time.sleep(35)
+
 class Handler(BaseHTTPRequestHandler):
     server_version = 'ParallelLaughStudio/3.6'
     protocol_version = 'HTTP/1.1'
@@ -616,9 +652,21 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         p=urlparse(self.path)
         try:
-            if p.path in ('/','/index.html'):
-                self.send_bytes(HTML.read_bytes(),'text/html')
-            elif p.path == '/api/jobs':
+            if p.path == '/api/license-status':
+                self.send_bytes(license_status())
+                return
+            current = license_status()
+            if p.path in ('/', '/index.html'):
+                page = HTML if current['valid'] else LICENSE_HTML
+                self.send_bytes(page.read_bytes(), 'text/html')
+                return
+            if not current['valid']:
+                self.send_bytes({'ok':False,'error':current['message'],'license_required':True},code=403)
+                return
+            if p.path in ('/api/license-activate', '/api/license-refresh'):
+                self.send_bytes({'ok':False,'error':'Already licensed'},code=400)
+                return
+            if p.path == '/api/jobs':
                 entries=[]
                 for folder,meta in jobs():
                     entries.append({'id':folder.name,'title':meta.get('title',folder.name),
@@ -737,6 +785,16 @@ class Handler(BaseHTTPRequestHandler):
                 raise ValueError('Request size invalid')
             obj=json.loads(self.rfile.read(n).decode('utf-8'))
             p=urlparse(self.path)
+            if p.path == '/api/license-activate':
+                self.send_bytes(LICENSE.activate(obj.get('key', '')))
+                return
+            if p.path == '/api/license-refresh':
+                self.send_bytes(license_status(force=True))
+                return
+            current = license_status()
+            if not current['valid']:
+                self.send_bytes({'ok':False,'error':current['message'],'license_required':True},code=403)
+                return
             if p.path == '/api/subtitle-languages':
                 folder,meta=find_job(obj.get('id',''))
                 raw=str(obj.get('source') or '').strip()
@@ -831,7 +889,7 @@ def main():
         raise RuntimeError('Cannot open localhost port')
     print('\nPARALLEL LAUGH STUDIO V2 — http://%s:%d'%(HOST,PORT))
     print('Running original ingest + Python 3.7 detector; browser is manual review lane.')
-    launch_workers(cfg)
+    threading.Thread(target=license_watch, daemon=True, name='LicenseCheck').start()
     webbrowser.open('http://%s:%d'%(HOST,PORT))
     try:
         http.serve_forever(poll_interval=0.25)
