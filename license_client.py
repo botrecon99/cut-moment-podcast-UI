@@ -1,6 +1,7 @@
 """Online license gate for LaughDetectionV2 (Python stdlib, Windows-friendly).
 
-License keys stay on each device under .license/, never in Git.
+License keys stay in Windows per-user AppData, independent of Git and browser.
+Legacy project-local .license/activation.json is automatically migrated.
 Offline allowance: at most 24 hours since a confirmed online validation and
 never past server-reported expiry. This is operational access control, not DRM.
 """
@@ -16,8 +17,22 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
 CONFIG = ROOT / 'license_config.json'
-DATA_DIR = ROOT / '.license'
-STATE_FILE = DATA_DIR / 'activation.json'
+LEGACY_STATE_FILE = ROOT / '.license' / 'activation.json'
+
+
+def _persistent_directory():
+    # LOCALAPPDATA is independent of Git, repository location, browser state,
+    # updates and re-cloning. On Windows this is under the signed-in user's home.
+    local_appdata = os.environ.get('LOCALAPPDATA')
+    if local_appdata:
+        return Path(local_appdata) / 'LaughDetectionV2' / 'license'
+    if os.name == 'nt':
+        return Path.home() / 'AppData' / 'Local' / 'LaughDetectionV2' / 'license'
+    return Path.home() / '.local' / 'share' / 'LaughDetectionV2' / 'license'
+
+
+DATA_DIR = _persistent_directory()
+STATE_FILE = DATA_DIR / 'activation.json' 
 OFFLINE_GRACE = 24 * 3600
 CHECK_INTERVAL = 120
 NETWORK_TIMEOUT = 6
@@ -29,6 +44,25 @@ def _json_file(path):
         return value if isinstance(value, dict) else {}
     except (OSError, ValueError, TypeError):
         return {}
+
+
+def _read_state():
+    """Read durable license state, migrating older project-local activations.
+
+    A failed migration does not erase the previous activation: it remains
+    readable until saving into AppData succeeds.
+    """
+    saved = _json_file(STATE_FILE)
+    if saved.get('key'):
+        return saved
+    legacy = _json_file(LEGACY_STATE_FILE)
+    if legacy.get('key'):
+        try:
+            _write_state(legacy)
+        except OSError as exc:
+            print('[License] Canh bao: khong chuyen duoc key cu sang AppData:', exc)
+        return legacy
+    return saved
 
 
 def _write_state(value):
@@ -96,11 +130,11 @@ class LicenseClient:
             if not force and self.memo is not None and tick - self.last_checked < CHECK_INTERVAL:
                 return dict(self.memo)
             url = self._endpoint()
-            state = _json_file(STATE_FILE)
+            state = _read_state()
             if not url:
-                answer = self._report(False, 'Chưa cấu hình máy chủ license (license_config.json).', configured=False)
+                answer = self._report(False, 'Chưa cấu hình máy chủ license (license_config.json).', configured=False, has_key=bool(state.get('key')))
             elif not state.get('key'):
-                answer = self._report(False, 'Chưa kích hoạt. Hãy nhập License Key.', configured=True)
+                answer = self._report(False, 'Chưa kích hoạt. Hãy nhập License Key.', configured=True, has_key=False)
             else:
                 try:
                     data, _ = self._request(url, '/api/validate', {
@@ -112,12 +146,12 @@ class LicenseClient:
                                       'label': data.get('label', ''), 'online_denied': False})
                         _write_state(state)
                         answer = self._report(expiry > now, 'License hợp lệ.' if expiry > now else 'License đã hết hạn.',
-                                              configured=True, expires_at=expiry,
+                                              configured=True, has_key=True, expires_at=expiry,
                                               offline=False, label=state.get('label', ''))
                     else:
                         state['online_denied'] = True
                         _write_state(state)
-                        answer = self._report(False, data.get('error', 'License bị từ chối.'), configured=True,
+                        answer = self._report(False, data.get('error', 'License bị từ chối.'), configured=True, has_key=True,
                                               expires_at=state.get('expires_at'), offline=False)
                 except (URLError, OSError, ValueError, KeyError, TimeoutError) as ex:
                     last = float(state.get('last_online_at') or 0)
@@ -126,7 +160,7 @@ class LicenseClient:
                     grace = (not state.get('online_denied') and 0 <= now - last <= OFFLINE_GRACE
                              and now < expiry and last > 0)
                     msg = 'Mất kết nối: được dùng offline tối đa 24 giờ kể từ xác thực cuối.' if grace else 'Không kết nối được máy chủ license. Cần Internet để xác thực.'
-                    answer = self._report(grace, msg, configured=True, expires_at=int(expiry),
+                    answer = self._report(grace, msg, configured=True, has_key=True, expires_at=int(expiry),
                                           offline=grace, network_error=str(ex)[:130])
             self.memo = answer
             self.last_checked = tick
@@ -146,8 +180,13 @@ class LicenseClient:
                 raise ValueError('Không kết nối được máy chủ license: %s' % ex)
             if not reply.get('valid'):
                 raise ValueError(reply.get('error', 'Kích hoạt thất bại.'))
-            _write_state({'key': key, 'expires_at': int(reply['expires_at']),
-                          'last_online_at': time.time(), 'label': reply.get('label', ''), 'online_denied': False})
+            try:
+                _write_state({'key': key, 'expires_at': int(reply['expires_at']),
+                              'last_online_at': time.time(), 'label': reply.get('label', ''),
+                              'online_denied': False})
+            except OSError as exc:
+                raise ValueError('Key da hop le nhung khong luu duoc tren may (' + str(STATE_FILE) + '): ' + str(exc))
+
             self.memo = None
             self.last_checked = 0
             return self.status(force=True)
